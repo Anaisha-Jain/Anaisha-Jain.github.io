@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    :root {
+      --bg: #fcfbfe;         
+      --wall: #f6f3f9;       
+      --desk: #ede6f2;       
+      --accent: #b58cb5;     
+      --accent-dim: rgba(181, 140, 181, 0.1);
+      --accent-mid: rgba(181, 140, 181, 0.3);
+      --text: #453445;       
+      --muted: #958495;      
+      --peach: #ffbba6;      
+      --sage:  #a8c3a6;      
+    }
+
+    html, body { 
+      height: 100%; 
+      width: 100%; 
+      overflow: hidden; 
+      background: var(--bg); 
+      color: var(--text); 
+      font-family: 'Cormorant Garamond', serif; 
+    }
+
+    #scene-container {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      background: var(--wall);
+    }
+    
+    .desk-surface {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 35vh;
+      background: var(--desk);
+      border-top: 4px solid #d8cce6;
+    }
+
+    .desk-edge {
+      position: absolute;
+      top: 0;
+      width: 100%;
+      height: 12px;
+      background: rgba(255,255,255,0.6);
+    }
+
+    .ambient-light {
+      position: absolute;
+      bottom: 35vh;
+      left: calc(50% - 600px);
+      width: 900px;
+      height: 300px;
+      background: linear-gradient(105deg, rgba(255, 240, 245, 0.6) 0%, rgba(255, 255, 255, 0) 70%);
+      clip-path: polygon(10% 20%, 100% 100%, 0% 100%);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .particle {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 3;
+    }
+    .p1 { width: 4px; height: 4px; left: calc(50% - 300px); bottom: 45vh; animation: float 14s infinite linear; }
+    .p2 { width: 3px; height: 3px; left: calc(50% - 100px); bottom: 50vh; animation: float 18s infinite linear 4s; }
+    .p3 { width: 5px; height: 5px; left: calc(50% + 200px); bottom: 40vh; animation: float 12s infinite linear 2s; }
+    .p4 { width: 2px; height: 2px; left: calc(50% - 500px); bottom: 60vh; animation: float 20s infinite linear 1s; }
+    .p5 { width: 3px; height: 3px; left: calc(50% + 400px); bottom: 55vh; animation: float 15s infinite linear 5s; }
+
+    @keyframes float {
+      0%   { transform: translateY(0) translateX(0); opacity: 0; }
+      20%  { opacity: 0.8; }
+      80%  { opacity: 0.8; }
+      100% { transform: translateY(-150px) translateX(40px); opacity: 0; }
+    }
+
+    .lab-equipment-layer {
+      position: absolute;
+      bottom: 35vh;
+      width: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      height: 350px;
+      pointer-events: none;
+      z-index: 4;
+    }
+
+    .prop { position: absolute; bottom: -4px; transition: opacity 0.3s ease; height: auto; }
+    
+    .prop-whiteboard { left: calc(50% - 560px); bottom: 120px; width: 220px; z-index: 1; }
+    .prop-lamp       { left: calc(50% - 500px); width: 100px; z-index: 6; }
+    .prop-computer   { left: calc(50% - 420px); width: 220px; z-index: 4; }
+    .prop-mug        { left: calc(50% - 440px); width: 36px; z-index: 7; }
+    .prop-hardware   { left: calc(50% - 240px); width: 120px; z-index: 5; }
+    .prop-poster-1   { left: calc(50% - 330px); bottom: 180px; width: 90px; }
+    .prop-poster-2   { left: calc(50% - 230px); bottom: 200px; width: 80px; transform: rotate(4deg); }
+
+    .prop-flasks     { left: calc(50% + 90px); width: 200px; z-index: 5; }
+    .prop-notebooks  { left: calc(50% + 280px); width: 70px; z-index: 6; }
+    .prop-labgear    { left: calc(50% + 340px); width: 120px; z-index: 5; }
+    .prop-window     { left: calc(50% + 290px); bottom: 100px; width: 180px; z-index: 1; }
+    .prop-shelf      { left: calc(50% + 120px); bottom: 180px; width: 160px; z-index: 2; }
+
+    @media (max-width: 750px) {
+      .prop, .ambient-light, .particle { opacity: 0; }
+    }
+
+    .screen { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; opacity: 1; transition: opacity 0.4s ease; z-index: 10; }
+    .screen.hidden { opacity: 0; pointer-events: none; }
+
+    #s-landing { flex-direction: column; gap: 16px; background: transparent; }
+    .landing-name { position: absolute; top: 8vh; font-family: 'Space Mono', monospace; font-size: 13px; letter-spacing: 6px; color: var(--text); text-transform: uppercase; text-align: center; z-index: 2; }
+
+    #scope-wrap { position: absolute; bottom: 35vh; left: 50%; transform: translateX(-50%); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: filter 0.4s, transform 0.35s; z-index: 20; filter: drop-shadow(0 12px 24px rgba(61,43,61,0.08)); pointer-events: auto; }
+    #scope-wrap:hover { filter: drop-shadow(0 16px 32px rgba(61,43,61,0.15)); transform: translate(-50%, -4px); }
+    #scope-wrap svg { pointer-events: none; }
+    
+    .click-hint { position: absolute; bottom: 25vh; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 4px; color: var(--muted); text-transform: uppercase; animation: breathe 2.6s ease-in-out infinite; z-index: 2; }
+    
+    @keyframes breathe { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.8; } }
+
+    #zoom-tunnel { position: fixed; inset: 0; z-index: 200; pointer-events: none; clip-path: circle(0px at 50% 50%); -webkit-clip-path: circle(0px at 50% 50%); opacity: 0; background: var(--bg); }
+
+    #s-lens { background: var(--bg); flex-direction: column; gap: 24px; }
+    .petri-wrap { position: relative; width: 500px; height: 500px; }
+
+    .section-screen { background: var(--bg); flex-direction: column; align-items: flex-start; justify-content: flex-start; padding: 8vh 12vw; overflow-y: auto; gap: 0; z-index: 50; }
+    .s-back { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 3px; color: var(--muted); text-transform: uppercase; cursor: pointer; display: flex; align-items: center; gap: 8px; margin-bottom: 56px; transition: color 0.2s; width: fit-content; }
+    .s-back:hover { color: var(--accent); }
+    .s-title { font-size: clamp(48px, 8vw, 82px); font-weight: 300; font-style: italic; line-height: 1; color: var(--text); margin-bottom: 24px; }
+    .s-rule { width: 64px; height: 2px; background: var(--accent); margin-bottom: 42px; }
+    .about-bio { font-size: 22px; font-weight: 300; line-height: 1.8; color: var(--muted); max-width: 680px; margin-bottom: 48px; }
+    .about-bio em { color: var(--text); font-style: italic; }
+    .about-tags { display: flex; flex-wrap: wrap; gap: 12px; }
+    .tag { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); border: 1px solid var(--accent-mid); padding: 8px 16px; border-radius: 4px; background: rgba(255,255,255,0.5); }
+    
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; width: 100%; max-width: 1000px; }
+    .project-card { border: 1px solid #eadded; padding: 32px; background: #ffffff; cursor: pointer; transition: all 0.3s; position: relative; overflow: hidden; border-radius: 6px; }
+    .project-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 0; background: var(--accent); transition: height 0.3s ease; }
+    .project-card:hover { border-color: var(--accent-mid); box-shadow: 0 12px 32px rgba(181, 140, 181, 0.1); transform: translateY(-4px); }
+    .project-card:hover::before { height: 100%; }
+    .project-num { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 3px; color: var(--muted); margin-bottom: 16px; }
+    .project-name { font-size: 24px; font-weight: 400; color: var(--text); margin-bottom: 12px; line-height: 1.2; }
+    .project-desc { font-size: 16px; color: var(--muted); line-height: 1.6; margin-bottom: 24px; }
+    .project-link { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 2px; color: var(--accent); text-decoration: none; text-transform: uppercase; font-weight: 700; }
+    
+    .skills-groups { display: flex; flex-direction: column; gap: 48px; max-width: 800px; }
+    .skill-group-title { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 3px; color: var(--accent); text-transform: uppercase; margin-bottom: 20px; font-weight: 700; }
+    .skill-list { display: flex; flex-wrap: wrap; gap: 16px; }
+    .skill-pill { font-size: 18px; color: var(--text); border-bottom: 1px solid var(--accent-mid); padding-bottom: 4px; }
+    
+    .contact-links { display: flex; flex-direction: column; gap: 24px; }
+    .contact-item { display: flex; align-items: center; gap: 24px; text-decoration: none; color: var(--text); transition: color 0.2s; width: fit-content; }
+    .contact-item:hover { color: var(--accent); }
+    .c-platform { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); width: 80px; }
+    .c-val { font-size: 22px; font-weight: 300; }
+
+    #overlay { position: fixed; inset: 0; background: var(--bg); z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+    #overlay.on { opacity: 1; pointer-events: auto; }
+
+    .nav-node { position: absolute; width: 100px; height: 100px; border-radius: 50%; border: 2px solid var(--accent-mid); background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(4px); cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 5; box-shadow: 0 4px 16px rgba(181, 140, 181, 0.1); }
+    .nav-node:hover { background: #ffffff; border-color: var(--accent); box-shadow: 0 8px 24px rgba(181, 140, 181, 0.25); }
+    .nav-node .n-icon { font-size: 18px; color: var(--accent); line-height: 1; }
+    .nav-node .n-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 2px; color: var(--text); text-transform: uppercase; opacity: 0; transition: opacity 0.3s; white-space: nowrap; font-weight: 700; }
+    .nav-node:hover .n-label { opacity: 1; }
+    .nav-node[data-id="about"]    { top: 40px; left: 50%; transform: translateX(-50%); }
+    .nav-node[data-id="projects"] { right: 40px; top: 50%; transform: translateY(-50%); }
+    .nav-node[data-id="skills"]   { bottom: 40px; left: 50%; transform: translateX(-50%); }
+    .nav-node[data-id="contact"]  { left: 40px; top: 50%; transform: translateY(-50%); }
+    .nav-node[data-id="about"]:hover    { transform: translateX(-50%) scale(1.1); }
+    .nav-node[data-id="projects"]:hover { transform: translateY(-50%) scale(1.1); }
+    .nav-node[data-id="skills"]:hover   { transform: translateX(-50%) scale(1.1); }
+    .nav-node[data-id="contact"]:hover  { transform: translateY(-50%) scale(1.1); }
+
+    .lens-back { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 3px; color: var(--muted); text-transform: uppercase; cursor: pointer; text-align: center; transition: color 0.2s; padding-top: 16px; }
+    .lens-back:hover { color: var(--accent); }
+
+    @keyframes pulse { 0%, 100% { opacity: 0.8; transform: scale(1); } 50% { opacity: 1; transform: scale(1.02); } }
+    @keyframes steam { 0% { opacity: 0; transform: translateY(0) scale(1); } 50% { opacity: 0.6; transform: translateY(-10px) scale(1.1); } 100% { opacity: 0; transform: translateY(-20px) scale(1.2); } }
+  </style>
+</head>
+<body>
+
+<div id="overlay"></div>
+
+<div id="scene-container">
+  <div class="ambient-light"></div>
+  <div class="particle p1"></div>
+  <div class="particle p2"></div>
+  <div class="particle p3"></div>
+  <div class="particle p4"></div>
+  <div class="particle p5"></div>
+
+  <div class="desk-surface">
+    <div class="desk-edge"></div>
+  </div>
+
+  <div class="lab-equipment-layer">
+    
+    <svg class="prop prop-lamp" viewBox="0 0 120 250" fill="none">
+      <path d="M 20 250 L 100 250 L 80 230 L 40 230 Z" fill="#453445"/>
+      <rect x="20" y="246" width="80" height="4" fill="#2d1f2d"/>
+      <line x1="60" y1="230" x2="30" y2="120" stroke="#715b71" stroke-width="8" stroke-linecap="round"/>
+      <line x1="30" y1="120" x2="80" y2="50" stroke="#715b71" stroke-width="6" stroke-linecap="round"/>
+      <circle cx="60" cy="230" r="8" fill="#2d1f2d"/>
+      <circle cx="30" cy="120" r="6" fill="#2d1f2d"/>
+      <circle cx="80" cy="50" r="5" fill="#2d1f2d"/>
+      <path d="M 75 45 L 110 30 L 120 60 L 85 75 Z" fill="#453445"/>
+      <ellipse cx="115" cy="45" rx="8" ry="16" fill="#fff5ee" transform="rotate(20 115 45)"/>
+    </svg>
+
+    <svg class="prop prop-whiteboard" viewBox="0 0 280 220" fill="none">
+      <rect x="0" y="0" width="280" height="220" rx="6" fill="rgba(255, 255, 255, 0.6)" stroke="#d8cce6" stroke-width="4"/>
+      <line x1="40" y1="220" x2="20" y2="280" stroke="#d8cce6" stroke-width="4"/>
+      <line x1="240" y1="220" x2="260" y2="280" stroke="#d8cce6" stroke-width="4"/>
+      <rect x="10" y="210" width="260" height="6" fill="#b58cb5" rx="2"/>
+      <text x="20" y="35" font-family="'Space Mono', monospace" font-size="12" fill="#b58cb5" font-weight="bold">Aptamer Binding</text>
+      <text x="20" y="70" font-family="'Cormorant Garamond', serif" font-size="22" font-style="italic" fill="#453445">K<tspan dy="6" font-size="14">d</tspan><tspan dy="-6"> = </tspan></text>
+      <text x="75" y="62" font-family="'Cormorant Garamond', serif" font-size="18" fill="#453445">[P][L]</text>
+      <text x="75" y="86" font-family="'Cormorant Garamond', serif" font-size="18" fill="#453445">[PL]</text>
+      <line x1="70" y1="68" x2="120" y2="68" stroke="#453445" stroke-width="1.5"/>
+      <path d="M 160 50 Q 180 30 200 60 T 240 50" fill="none" stroke="#958495" stroke-width="2"/>
+      <path d="M 160 70 Q 180 90 200 60 T 240 70" fill="none" stroke="#958495" stroke-width="2"/>
+      <line x1="170" y1="56" x2="170" y2="67" stroke="#b58cb5" stroke-width="1.5"/>
+      <line x1="185" y1="46" x2="185" y2="72" stroke="#b58cb5" stroke-width="1.5"/>
+      <line x1="215" y1="56" x2="215" y2="67" stroke="#b58cb5" stroke-width="1.5"/>
+      <line x1="230" y1="50" x2="230" y2="70" stroke="#b58cb5" stroke-width="1.5"/>
+      <rect x="20" y="110" width="70" height="25" rx="4" fill="rgba(181, 140, 181, 0.15)" stroke="#b58cb5" stroke-width="1.5"/>
+      <text x="35" y="126" font-family="'Space Mono'" font-size="8" fill="#b58cb5">SELEX</text>
+      <path d="M 90 122 L 120 122 L 115 118 M 120 122 L 115 126" stroke="#958495" stroke-width="1.5" fill="none"/>
+      <rect x="120" y="110" width="80" height="25" rx="4" fill="rgba(255, 187, 166, 0.15)" stroke="#ffbba6" stroke-width="1.5"/>
+      <text x="128" y="126" font-family="'Space Mono'" font-size="8" fill="#e69c85">BIOSENSOR</text>
+      <circle cx="230" cy="122" r="14" fill="rgba(181, 140, 181, 0.1)" stroke="#b58cb5" stroke-width="1.5" stroke-dasharray="3 3"/>
+      <circle cx="230" cy="122" r="4" fill="#b58cb5"/>
+      <path d="M 200 122 L 210 122 L 205 118 M 210 122 L 205 126" stroke="#958495" stroke-width="1.5" fill="none"/>
+    </svg>
+
+    <svg class="prop prop-window" viewBox="0 0 220 220" fill="none">
+      <rect x="0" y="0" width="220" height="220" fill="#2b1d3d" stroke="#d8cce6" stroke-width="6"/>
+      <rect x="3" y="3" width="214" height="214" fill="#1b1226"/>
+      <circle cx="50" cy="180" r="120" fill="rgba(181, 140, 181, 0.15)" filter="blur(15px)"/>
+      <circle cx="180" cy="40" r="80" fill="rgba(255, 187, 166, 0.1)" filter="blur(20px)"/>
+      <circle cx="40" cy="50" r="1" fill="#ffffff"/><circle cx="80" cy="20" r="1.5" fill="#ffffff"/>
+      <circle cx="160" cy="70" r="1" fill="#ffffff"/><circle cx="190" cy="110" r="1" fill="#ffffff"/>
+      <circle cx="30" cy="120" r="1" fill="#ffffff"/><circle cx="110" cy="90" r="1" fill="#ffffff"/>
+      <circle cx="160" cy="40" r="8" fill="#fdfbfe"/>
+      <circle cx="156" cy="38" r="8" fill="#1b1226"/>
+      <rect x="10" y="160" width="25" height="60" fill="#3d2b3d"/>
+      <rect x="40" y="130" width="35" height="90" fill="#2b1d3d"/>
+      <rect x="80" y="150" width="30" height="70" fill="#3d2b3d"/>
+      <rect x="115" y="110" width="40" height="110" fill="#2b1d3d"/>
+      <rect x="160" y="140" width="30" height="80" fill="#3d2b3d"/>
+      <rect x="195" y="170" width="20" height="50" fill="#2b1d3d"/>
+      <line x1="110" y1="0" x2="110" y2="220" stroke="#d8cce6" stroke-width="4"/>
+      <line x1="0" y1="110" x2="220" y2="110" stroke="#d8cce6" stroke-width="4"/>
+      <path d="M 20 20 L 80 220" stroke="rgba(255,255,255,0.05)" stroke-width="15" fill="none"/>
+    </svg>
+
+    <svg class="prop prop-shelf" viewBox="0 0 200 160" fill="none">
+      <line x1="40" y1="115" x2="40" y2="140" stroke="#d8cce6" stroke-width="4" stroke-linecap="round"/>
+      <line x1="160" y1="115" x2="160" y2="140" stroke="#d8cce6" stroke-width="4" stroke-linecap="round"/>
+      <rect x="10" y="100" width="180" height="15" rx="2" fill="#ffffff"/>
+      <rect x="10" y="115" width="180" height="4" fill="#d8cce6"/>
+      <rect x="25" y="60" width="14" height="40" fill="#b58cb5" rx="1"/>
+      <rect x="41" y="65" width="12" height="35" fill="#fcfbfe" rx="1"/>
+      <rect x="55" y="55" width="16" height="45" fill="#ffbba6" rx="1"/>
+      <rect x="73" y="62" width="14" height="38" fill="#958495" rx="1"/>
+      <line x1="29" y1="65" x2="29" y2="95" stroke="rgba(255,255,255,0.4)" stroke-width="2"/>
+      <line x1="59" y1="60" x2="59" y2="95" stroke="rgba(255,255,255,0.4)" stroke-width="2"/>
+      <g transform="translate(105, 100)">
+        <path d="M 15 -20 Q 5 -45 -10 -55 Q 0 -30 15 -20" fill="#8fa88d"/>
+        <path d="M 15 -20 Q 25 -50 40 -60 Q 30 -30 15 -20" fill="#a8c3a6"/>
+        <path d="M 15 -20 Q 40 -40 50 -25 Q 35 -15 15 -20" fill="#8fa88d"/>
+        <path d="M 15 -20 Q -5 -35 -20 -20 Q -5 -10 15 -20" fill="#a8c3a6"/>
+        <path d="M 15 -20 Q 15 -55 20 -70 Q 25 -40 15 -20" fill="#8fa88d"/>
+        <path d="M 0 0 L 30 0 L 34 -25 L -4 -25 Z" fill="#ffbba6"/>
+        <rect x="-6" y="-28" width="42" height="5" rx="2" fill="#f5a890"/>
+      </g>
+      <g transform="translate(165, 100)">
+        <ellipse cx="0" cy="-25" rx="8" ry="16" fill="#a8c3a6"/>
+        <ellipse cx="-8" cy="-20" rx="6" ry="12" fill="#8fa88d" transform="rotate(-30 -8 -20)"/>
+        <ellipse cx="8" cy="-20" rx="6" ry="12" fill="#8fa88d" transform="rotate(30 8 -20)"/>
+        <circle cx="0" cy="-42" r="4" fill="#b58cb5"/>
+        <circle cx="0" cy="-42" r="2" fill="#ffffff"/>
+        <path d="M -10 0 L 10 0 L 12 -14 L -12 -14 Z" fill="#fcfbfe"/>
+        <rect x="-14" y="-17" width="28" height="4" rx="1.5" fill="#d8cce6"/>
+      </g>
+    </svg>
+
+    <svg class="prop prop-poster-1" viewBox="0 0 110 150" fill="none">
+      <rect x="0" y="0" width="110" height="150" fill="#ffffff" stroke="#d8cce6" stroke-width="2" rx="2"/>
+      <rect x="10" y="10" width="90" height="90" fill="#f6f3f9" rx="2"/>
+      <circle cx="55" cy="55" r="22" fill="#958495"/>
+      <polygon points="40,40 30,22 50,32" fill="#958495"/>
+      <polygon points="70,40 80,22 60,32" fill="#958495"/>
+      <rect x="36" y="46" width="38" height="14" rx="4" fill="rgba(255, 187, 166, 0.3)" stroke="#ffbba6" stroke-width="2"/>
+      <line x1="36" y1="53" x2="30" y2="50" stroke="#ffbba6" stroke-width="2"/>
+      <line x1="74" y1="53" x2="80" y2="50" stroke="#ffbba6" stroke-width="2"/>
+      <line x1="22" y1="58" x2="35" y2="55" stroke="#d8cce6" stroke-width="1.5"/>
+      <line x1="22" y1="65" x2="35" y2="61" stroke="#d8cce6" stroke-width="1.5"/>
+      <line x1="88" y1="58" x2="75" y2="55" stroke="#d8cce6" stroke-width="1.5"/>
+      <line x1="88" y1="65" x2="75" y2="61" stroke="#d8cce6" stroke-width="1.5"/>
+      <rect x="15" y="115" width="80" height="4" fill="#d8cce6" rx="2"/>
+      <rect x="25" y="125" width="60" height="4" fill="#b58cb5" rx="2"/>
+    </svg>
+
+    <svg class="prop prop-poster-2" viewBox="0 0 100 130" fill="none">
+      <rect x="0" y="0" width="100" height="130" fill="#ffffff" stroke="#d8cce6" stroke-width="2" rx="2"/>
+      <line x1="10" y1="90" x2="90" y2="90" stroke="#d8cce6" stroke-width="2"/>
+      <g transform="translate(65, 80) rotate(35)">
+        <path d="M -15 0 L -10 20 L 10 20 L 15 0 Z" fill="rgba(181, 140, 181, 0.2)" stroke="#b58cb5" stroke-width="2"/>
+        <line x1="-18" y1="0" x2="18" y2="0" stroke="#b58cb5" stroke-width="2"/>
+        <path d="M 12 5 Q 25 15 20 30" fill="none" stroke="#b58cb5" stroke-width="3" stroke-linecap="round"/>
+      </g>
+      <path d="M 10 70 Q 30 75 45 80" fill="none" stroke="#715b71" stroke-width="8" stroke-linecap="round"/>
+      <path d="M 10 65 Q 25 70 40 75" fill="none" stroke="#958495" stroke-width="4" stroke-linecap="round"/>
+      <rect x="15" y="15" width="70" height="5" fill="#ffbba6" rx="2.5"/>
+      <rect x="15" y="25" width="40" height="4" fill="#d8cce6" rx="2"/>
+    </svg>
+
+    <svg class="prop prop-mug" viewBox="0 0 40 60" fill="none">
+      <path d="M 15 25 Q 10 15 15 5 T 15 -5" stroke="#d8cce6" stroke-width="2" fill="none" style="animation: steam 3s infinite linear; opacity: 0;"/>
+      <path d="M 25 30 Q 30 20 25 10 T 25 0" stroke="#d8cce6" stroke-width="2" fill="none" style="animation: steam 3s infinite linear 1.5s; opacity: 0;"/>
+      <path d="M 30 35 C 45 35 45 55 30 55" fill="none" stroke="#453445" stroke-width="4"/>
+      <rect x="5" y="30" width="28" height="28" rx="4" fill="#453445"/>
+      <rect x="5" y="30" width="28" height="4" fill="#2d1f2d" rx="2"/>
+    </svg>
+
+    <svg class="prop prop-computer" viewBox="0 0 240 200" fill="none">
+      <rect x="105" y="150" width="30" height="40" fill="#d8cce6"/>
+      <rect x="80" y="190" width="80" height="10" rx="3" fill="#b58cb5"/>
+      <rect x="10" y="20" width="220" height="130" rx="6" fill="#ffffff" stroke="#d8cce6" stroke-width="2"/>
+      <rect x="15" y="25" width="210" height="120" rx="4" fill="#fcfbfe"/>
+      <rect x="15" y="25" width="210" height="16" fill="#ede6f2" rx="4"/>
+      <rect x="22" y="29" width="14" height="8" fill="#d8cce6" rx="2"/>
+      <rect x="42" y="29" width="14" height="8" fill="#d8cce6" rx="2"/>
+      <rect x="62" y="29" width="14" height="8" fill="#d8cce6" rx="2"/>
+      <rect x="15" y="41" width="45" height="104" fill="#ffffff" stroke="#ede6f2" stroke-width="1"/>
+      <line x1="20" y1="50" x2="50" y2="50" stroke="#d8cce6" stroke-width="2"/>
+      <line x1="20" y1="62" x2="40" y2="62" stroke="#d8cce6" stroke-width="2"/>
+      <circle cx="20" cy="74" r="2" fill="#b58cb5"/>
+      <line x1="26" y1="74" x2="55" y2="74" stroke="#d8cce6" stroke-width="2"/>
+      <circle cx="20" cy="86" r="2" fill="#a8c3a6"/>
+      <line x1="26" y1="86" x2="45" y2="86" stroke="#d8cce6" stroke-width="2"/>
+      <g transform="translate(115, 65)">
+        <path d="M -40 60 L -30 60 M -40 60 L -40 50 M -40 60 L -45 65" stroke="#ffbba6" stroke-width="1.5"/>
+        <circle cx="-40" cy="60" r="1.5" fill="#ffbba6"/>
+        <g stroke="#b58cb5" stroke-width="2" fill="none">
+          <ellipse cx="25" cy="15" rx="30" ry="12" />
+          <path d="M -5 15 L -5 45 A 30 12 0 0 0 55 45 L 55 15" fill="rgba(181, 140, 181, 0.1)"/>
+          <path d="M -5 15 L -5 45" stroke="#b58cb5" stroke-width="2"/>
+          <path d="M 55 15 L 55 45" stroke="#b58cb5" stroke-width="2"/>
+          <ellipse cx="25" cy="15" rx="14" ry="5" />
+          <path d="M 11 15 L 11 45" stroke="#b58cb5" stroke-width="1.5" opacity="0.6" stroke-dasharray="2 2"/>
+          <path d="M 39 15 L 39 45" stroke="#b58cb5" stroke-width="1.5" opacity="0.6" stroke-dasharray="2 2"/>
+          <path d="M -5 45 A 30 12 0 0 1 55 45" stroke="#b58cb5" stroke-width="1.5" opacity="0.6" stroke-dasharray="2 2"/>
+        </g>
+      </g>
+    </svg>
+
+    <svg class="prop prop-hardware" viewBox="0 0 160 70" fill="none">
+      <path d="M 50 45 Q 80 70 100 45" fill="none" stroke="#ffbba6" stroke-width="2"/>
+      <path d="M 50 50 Q 85 80 105 50" fill="none" stroke="#b58cb5" stroke-width="2"/>
+      <path d="M 50 55 Q 70 80 110 55" fill="none" stroke="#453445" stroke-width="2"/>
+      <rect x="10" y="30" width="55" height="35" rx="3" fill="#a8c3a6"/>
+      <rect x="10" y="25" width="15" height="12" fill="#ffffff" stroke="#d8cce6" stroke-width="1"/>
+      <rect x="15" y="58" width="45" height="4" fill="#2d1f2d"/>
+      <rect x="15" y="32" width="20" height="4" fill="#2d1f2d"/>
+      <circle cx="50" cy="45" r="5" fill="#453445"/>
+      <circle cx="20" cy="45" r="1" fill="#ffbba6"/>
+      <rect x="90" y="45" width="40" height="20" rx="4" fill="#ffffff" stroke="#d8cce6" stroke-width="2"/>
+      <circle cx="110" cy="55" r="5" fill="#958495"/>
+      <line x1="95" y1="45" x2="90" y2="20" stroke="#d8cce6" stroke-width="4" stroke-linecap="round"/>
+      <line x1="90" y1="20" x2="85" y2="5" stroke="#b58cb5" stroke-width="4" stroke-linecap="round"/>
+      <circle cx="90" cy="20" r="2" fill="#453445"/>
+      <line x1="110" y1="45" x2="110" y2="15" stroke="#d8cce6" stroke-width="4" stroke-linecap="round"/>
+      <line x1="110" y1="15" x2="110" y2="0" stroke="#b58cb5" stroke-width="4" stroke-linecap="round"/>
+      <circle cx="110" cy="15" r="2" fill="#453445"/>
+      <line x1="125" y1="45" x2="130" y2="25" stroke="#d8cce6" stroke-width="4" stroke-linecap="round"/>
+      <line x1="130" y1="25" x2="135" y2="10" stroke="#b58cb5" stroke-width="4" stroke-linecap="round"/>
+      <circle cx="130" cy="25" r="2" fill="#453445"/>
+    </svg>
+
+    <svg class="prop prop-flasks" viewBox="0 0 240 150" fill="none">
+      <path d="M 50 145 L 10 145 L 24 80 L 24 40 L 36 40 L 36 80 Z" fill="rgba(255, 255, 255, 0.7)" stroke="#d8cce6" stroke-width="2"/>
+      <path d="M 46 145 L 14 145 L 19 105 L 41 105 Z" fill="rgba(255, 187, 166, 0.4)"/>
+      <rect x="22" y="36" width="16" height="4" fill="#d8cce6" rx="2"/>
+      <circle cx="30" cy="125" r="3" fill="#ffffff" opacity="0.6"/>
+      <path d="M 120 145 L 60 145 L 60 70 L 120 70 Z" fill="rgba(255, 255, 255, 0.7)" stroke="#d8cce6" stroke-width="2"/>
+      <path d="M 56 70 L 124 70" stroke="#d8cce6" stroke-width="3" stroke-linecap="round"/>
+      <path d="M 116 145 L 64 145 L 64 100 L 116 100 Z" fill="rgba(181, 140, 181, 0.3)"/>
+      <line x1="65" y1="120" x2="75" y2="120" stroke="#d8cce6" stroke-width="2"/>
+      <line x1="65" y1="100" x2="75" y2="100" stroke="#d8cce6" stroke-width="2"/>
+      <line x1="65" y1="80" x2="75" y2="80" stroke="#d8cce6" stroke-width="2"/>
+      <g transform="translate(150, 75)">
+        <rect x="22" y="-35" width="16" height="40" fill="rgba(255, 255, 255, 0.7)" stroke="#d8cce6" stroke-width="2"/>
+        <rect x="18" y="-38" width="24" height="4" fill="#d8cce6" rx="2"/>
+        <circle cx="30" cy="40" r="30" fill="rgba(255, 255, 255, 0.7)" stroke="#d8cce6" stroke-width="2"/>
+        <path d="M 23 10 L 37 10" stroke="#ffffff" stroke-width="3"/>
+        <path d="M 6 45 A 25 25 0 0 0 54 45 Z" fill="rgba(253, 246, 227, 0.6)"/> </g>
+    </svg>
+
+    <svg class="prop prop-notebooks" viewBox="0 0 80 60" fill="none">
+      <rect x="10" y="45" width="70" height="12" rx="2" fill="#a8c3a6"/>
+      <rect x="10" y="47" width="70" height="4" fill="#ffffff"/>
+      <rect x="10" y="45" width="8" height="12" fill="#8fa88d"/>
+      <rect x="15" y="35" width="60" height="10" rx="1" fill="#b58cb5"/>
+      <rect x="15" y="37" width="60" height="3" fill="#ffffff"/>
+      <rect x="15" y="35" width="6" height="10" fill="#958495"/>
+      <rect x="12" y="23" width="55" height="12" rx="2" fill="#ffbba6"/>
+      <rect x="12" y="25" width="55" height="4" fill="#ffffff"/>
+      <rect x="12" y="23" width="8" height="12" fill="#f5a890"/>
+      <rect x="25" y="19" width="35" height="4" rx="2" fill="#d8cce6"/>
+      <rect x="55" y="19" width="5" height="4" fill="#453445"/>
+      <path d="M 60 19 L 64 21 L 60 23 Z" fill="#958495"/>
+    </svg>
+
+    <svg class="prop prop-labgear" viewBox="0 0 140 120" fill="none">
+      <rect x="10" y="80" width="80" height="35" rx="4" fill="#ffffff" stroke="#d8cce6" stroke-width="2"/>
+      <g fill="#ede6f2">
+        <circle cx="20" cy="90" r="3"/><circle cx="35" cy="90" r="3"/><circle cx="50" cy="90" r="3"/><circle cx="65" cy="90" r="3"/><circle cx="80" cy="90" r="3"/>
+        <circle cx="20" cy="100" r="3"/><circle cx="35" cy="100" r="3" fill="#ffbba6"/><circle cx="50" cy="100" r="3" fill="#b58cb5"/><circle cx="65" cy="100" r="3"/><circle cx="80" cy="100" r="3"/>
+        <circle cx="20" cy="110" r="3"/><circle cx="35" cy="110" r="3"/><circle cx="50" cy="110" r="3"/><circle cx="65" cy="110" r="3"/><circle cx="80" cy="110" r="3"/>
+      </g>
+      <g transform="translate(100, 10)">
+        <rect x="8" y="0" width="10" height="60" rx="5" fill="#ffffff" stroke="#d8cce6" stroke-width="2"/>
+        <rect x="10" y="-10" width="6" height="10" rx="1" fill="#ffbba6"/>
+        <rect x="5" y="10" width="16" height="20" rx="2" fill="#958495"/>
+        <path d="M 6 60 L 20 60 L 16 90 L 10 90 Z" fill="#f6f3f9" stroke="#d8cce6" stroke-width="2"/>
+        <path d="M 10 90 L 16 90 L 14 105 L 12 105 Z" fill="rgba(181, 140, 181, 0.4)"/>
+      </g>
+    </svg>
+
+  </div>
+</div>
+
+<div id="zoom-tunnel"></div>
+
+<div class="screen" id="s-landing">
+  <p class="landing-name">Anaisha Jain</p>
+  
+  <div id="scope-wrap" onclick="enterLens()">
+    <svg id="scope-svg" width="200" height="300" viewBox="0 0 200 300" fill="none">
+      <ellipse cx="100" cy="290" rx="80" ry="10" fill="rgba(0,0,0,0.06)"/>
+      <path d="M 30 280 L 170 280 L 150 240 L 50 240 Z" fill="#3d2b3d"/>
+      <rect x="30" y="280" width="140" height="8" rx="4" fill="#2d1f2d"/>
+      <path d="M 130 240 C 180 200 180 100 130 60 L 90 60 L 90 100 C 120 120 120 180 100 200 Z" fill="#574257"/>
+      <rect x="40" y="190" width="80" height="10" rx="2" fill="#2d1f2d"/>
+      <rect x="110" y="192" width="10" height="6" fill="#1b1226"/>
+      <circle cx="135" cy="210" r="18" fill="#3d2b3d"/>
+      <circle cx="135" cy="210" r="10" fill="#2d1f2d"/>
+      
+      <g transform="rotate(-30, 80, 80)">
+        <rect x="55" y="20" width="40" height="100" rx="4" fill="#e6e0f0" stroke="#d8cce6" stroke-width="2"/>
+        <rect x="65" y="5" width="20" height="15" fill="#d8cce6"/>
+        <rect x="60" y="0" width="30" height="5" rx="2" fill="#3d2b3d"/>
+        <rect x="45" y="120" width="60" height="12" rx="4" fill="#3d2b3d"/>
+        <path d="M 60 132 L 80 132 L 75 160 L 65 160 Z" fill="#ffffff" stroke="#d8cce6"/>
+        <rect x="65" y="155" width="10" height="5" fill="#b58cb5"/>
+        <path d="M 90 132 L 100 132 L 95 145 L 90 145 Z" fill="#f6f3f9" opacity="0.8"/>
+      </g>
+    </svg>
+  </div>
+  <p class="click-hint">click the microscope to lool inside</p>
+</div>
+
+<div class="screen hidden" id="s-lens">
+  <div class="petri-wrap">
+    
+    <svg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="agarBg" cx="50%" cy="50%" r="50%">
+          <stop offset="0%"   stop-color="#ffffff"/>
+          <stop offset="70%"  stop-color="#fdfbfe"/>
+          <stop offset="100%" stop-color="#f5f0f8"/>
+        </radialGradient>
+        <linearGradient id="glassRim" x1="0" x2="1" y1="0" y2="1">
+          <stop offset="0%" stop-color="#ffffff"/>
+          <stop offset="50%" stop-color="#f6f3f9"/>
+          <stop offset="100%" stop-color="#d8cce6"/>
+        </linearGradient>
+        <radialGradient id="colTaro" cx="40%" cy="40%" r="60%">
+          <stop offset="0%" stop-color="#d6b8d6"/>
+          <stop offset="60%" stop-color="#b58cb5"/>
+          <stop offset="100%" stop-color="#958495"/>
+        </radialGradient>
+        <radialGradient id="colPeach" cx="40%" cy="40%" r="60%">
+          <stop offset="0%" stop-color="#ffdec9"/>
+          <stop offset="60%" stop-color="#ffbba6"/>
+          <stop offset="100%" stop-color="#f5a890"/>
+        </radialGradient>
+        <radialGradient id="colCream" cx="40%" cy="40%" r="60%">
+          <stop offset="0%" stop-color="#ffffff"/>
+          <stop offset="60%" stop-color="#fff3e0"/>
+          <stop offset="100%" stop-color="#ffe0b2"/>
+        </radialGradient>
+        <clipPath id="dishClip"><circle cx="250" cy="250" r="230"/></clipPath>
+      </defs>
+
+      <circle cx="250" cy="255" r="238" fill="rgba(61,43,61,0.05)"/>
+      <circle cx="250" cy="250" r="240" fill="none" stroke="url(#glassRim)" stroke-width="12"/>
+      <circle cx="250" cy="250" r="234" fill="none" stroke="#d8cce6" stroke-width="1"/>
+      <circle cx="250" cy="250" r="230" fill="url(#agarBg)"/>
+
+      <g style="animation: pulse 4s ease-in-out infinite">
+        <circle cx="160" cy="180" r="28" fill="url(#colTaro)" opacity="0.8"/>
+        <circle cx="175" cy="195" r="16" fill="url(#colTaro)"/>
+        <circle cx="140" cy="165" r="12" fill="url(#colTaro)"/>
+      </g>
+      <circle cx="360" cy="200" r="22" fill="url(#colPeach)" style="animation: pulse 5s ease-in-out infinite 1s"/>
+      <circle cx="372" cy="188" r="8" fill="#ffffff"/>
+      
+      <g style="animation: pulse 3.5s ease-in-out infinite 0.5s">
+        <circle cx="220" cy="360" r="14" fill="url(#colCream)"/>
+        <circle cx="240" cy="375" r="9" fill="url(#colCream)"/>
+        <circle cx="205" cy="370" r="6" fill="url(#colCream)"/>
+      </g>
+
+      <circle cx="300" cy="130" r="5" fill="#b58cb5"/>
+      <circle cx="120" cy="300" r="4" fill="#ffbba6"/>
+      <circle cx="380" cy="320" r="6" fill="#b58cb5"/>
+      <circle cx="190" cy="120" r="3" fill="#fff3e0"/>
+
+      <line x1="250" y1="20" x2="250" y2="480" stroke="#d8cce6" stroke-width="1" stroke-dasharray="6 6" clip-path="url(#dishClip)"/>
+      <line x1="20" y1="250" x2="480" y2="250" stroke="#d8cce6" stroke-width="1" stroke-dasharray="6 6" clip-path="url(#dishClip)"/>
+      <circle cx="250" cy="250" r="4" fill="#b58cb5"/>
+
+      <path d="M 60 250 A 190 190 0 0 1 250 60" fill="none" stroke="#ffffff" stroke-width="16" stroke-linecap="round" opacity="0.8" clip-path="url(#dishClip)"/>
+      <path d="M 80 250 A 170 170 0 0 1 250 80" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" opacity="0.5" clip-path="url(#dishClip)"/>
+    </svg>
+
+    <div class="nav-node" data-id="about"    onclick="go('about')">   <span class="n-icon">◈</span><span class="n-label">About Me</span></div>
+    <div class="nav-node" data-id="projects" onclick="go('projects')"><span class="n-icon">◈</span><span class="n-label">Projects</span></div>
+    <div class="nav-node" data-id="skills"   onclick="go('skills')">  <span class="n-icon">◈</span><span class="n-label">Skills</span></div>
+    <div class="nav-node" data-id="contact"  onclick="go('contact')"> <span class="n-icon">◈</span><span class="n-label">Contact</span></div>
+  </div>
+  
+  <p class="lens-back" onclick="backToDesk()">← Back to Desk</p>
+</div>
+
+<div class="screen hidden section-screen" id="s-about">
+  <p class="s-back" onclick="backToLens('s-about')">← back to lens</p>
+  <h1 class="s-title">About<br/>Me</h1>
+  <div class="s-rule"></div>
+  <p class="about-bio">I am a <em>nanobiotechnology engineer</em> fascinated by the interface of biology 
+  and engineering at the molecular scale. My work sits at the intersection of biosensors and bioinformatics, 
+  where I design DNA aptamer systems and robotic integrations. I believe the most important problems in the world are solved at the scale of 10⁻⁹ metres.</p>
+  <div class="about-tags">
+    <span class="tag">Nanobiotechnology</span>
+    <span class="tag">Biosensors</span>
+    <span class="tag">Aptamers</span>
+    <span class="tag">Bioinformatics</span>
+  </div>
+</div>
+
+<div class="screen hidden section-screen" id="s-projects">
+  <p class="s-back" onclick="backToLens('s-projects')">← back to lens</p>
+  <h1 class="s-title">Projects</h1>
+  <div class="s-rule"></div>
+  <div class="projects-grid">
+    <div class="project-card"><p class="project-num">01 —</p><p class="project-name">DNA Biosensors</p><p class="project-desc">Analysis of binding affinities and selection processes for nanobiosystems.</p><a class="project-link" href="#" target="_blank">View Project →</a></div>
+    <div class="project-card"><p class="project-num">02 —</p><p class="project-name">Robotic Hand Interface</p><p class="project-desc">Hardware-software integration using Arduino, Python, and computer vision for gesture control.</p><a class="project-link" href="#" target="_blank">View Project →</a></div>
+    <div class="project-card"><p class="project-num">03 —</p><p class="project-name">Bioinformatics Pipeline</p><p class="project-desc">Extracting and processing drug delivery data from the ChEMBL database utilizing Python.</p><a class="project-link" href="#" target="_blank">View Project →</a></div>
+  </div>
+</div>
+
+<div class="screen hidden section-screen" id="s-skills">
+  <p class="s-back" onclick="backToLens('s-skills')">← back to lens</p>
+  <h1 class="s-title">Skills</h1>
+  <div class="s-rule"></div>
+  <div class="skills-groups">
+    <div><p class="skill-group-title">Hardware & Engineering</p><div class="skill-list"><span class="skill-pill">Arduino Microcontrollers</span><span class="skill-pill">Circuit Analysis</span><span class="skill-pill">Robotics Integration</span></div></div>
+    <div><p class="skill-group-title">Software & Data</p><div class="skill-list"><span class="skill-pill">Python</span><span class="skill-pill">MATLAB</span><span class="skill-pill">Biopython</span><span class="skill-pill">Pandas</span><span class="skill-pill">Computer Vision</span></div></div>
+    <div><p class="skill-group-title">Research Focus</p><div class="skill-list"><span class="skill-pill">Nanoscale Systems</span><span class="skill-pill">Aptamer Synthesis</span><span class="skill-pill">Molecular Interfaces</span></div></div>
+  </div>
+</div>
+
+<div class="screen hidden section-screen" id="s-contact">
+  <p class="s-back" onclick="backToLens('s-contact')">← back to lens</p>
+  <h1 class="s-title">Contact</h1>
+  <div class="s-rule"></div>
+  <p class="contact-intro">Interested in collaborating, or just want to talk nanoscience? Reach out.</p>
+  <div class="contact-links">
+    <a class="contact-item" href="mailto:a358jain@uwaterloo.ca"><span class="c-platform">Email</span><span class="c-val">a358jain@uwaterloo.ca"</span></a>
+    <a class="contact-item" href="https://linkedin.com/anaisha-jain" target="_blank"><span class="c-platform">LinkedIn</span><span class="c-val">https://www.linkedin.com/in/anaisha-jain-b02778325/</span></a>
+    <a class="contact-item" href="https://github.com/Anaisha-Jain" target="_blank"><span class="c-platform">GitHub</span><span class="c-val">https://github.com/Anaisha-Jain</span></a>
+  </div>
+</div>
+
+<script>
+const overlay = document.getElementById('overlay');
+const tunnel  = document.getElementById('zoom-tunnel');
+
+function showOnly(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+}
+
+function enterLens() {
+  const svg  = document.getElementById('scope-svg');
+  const rect = svg.getBoundingClientRect();
+  
+  const sx = rect.width  / 200;
+  const sy = rect.height / 300;
+  const ex = rect.left + 75 * sx; 
+  const ey = rect.top  + 10 * sy; 
+
+  tunnel.style.transition = 'none';
+  tunnel.style.opacity = '1';
+  tunnel.style.pointerEvents = 'auto'; 
+  tunnel.style.clipPath = `circle(0px at ${ex}px ${ey}px)`;
+  tunnel.style.webkitClipPath = `circle(0px at ${ex}px ${ey}px)`; 
+
+  tunnel.getBoundingClientRect(); 
+
+  tunnel.style.transition = 'clip-path 0.8s cubic-bezier(0.2, 0.8, 0.2, 1.0), -webkit-clip-path 0.8s cubic-bezier(0.2, 0.8, 0.2, 1.0)';
+  tunnel.style.clipPath = `circle(220vmax at ${ex}px ${ey}px)`;
+  tunnel.style.webkitClipPath = `circle(220vmax at ${ex}px ${ey}px)`;
+
+  setTimeout(() => {
+    showOnly('s-lens');
+    tunnel.style.transition = 'opacity 0.4s ease-out';
+    tunnel.style.opacity = '0';
+    
+    setTimeout(() => {
+      tunnel.style.transition = 'none';
+      tunnel.style.clipPath = 'circle(0px at 50% 50%)';
+      tunnel.style.webkitClipPath = 'circle(0px at 50% 50%)';
+      tunnel.style.pointerEvents = 'none';
+    }, 450);
+  }, 750);
+}
+
+function go(section) {
+  overlay.classList.add('on');
+  setTimeout(() => { 
+    showOnly('s-' + section); 
+    overlay.classList.remove('on'); 
+  }, 300);
+}
+
+function backToLens(currentSectionId) {
+  overlay.classList.add('on');
+  setTimeout(() => { 
+    showOnly('s-lens'); 
+    overlay.classList.remove('on'); 
+  }, 300);
+}
+
+function backToDesk() {
+  overlay.classList.add('on');
+  setTimeout(() => { 
+    showOnly('s-landing'); 
+    overlay.classList.remove('on'); 
+  }, 300);
+}
+</script>
+</body>
+</html>
