@@ -121,7 +121,8 @@
     .screen.hidden { opacity: 0; pointer-events: none; }
 
     #s-landing { flex-direction: column; gap: 16px; background: transparent; }
-    .landing-name { position: absolute; top: 8vh; font-family: 'Space Mono', monospace; font-size: 13px; letter-spacing: 6px; color: var(--text); text-transform: uppercase; text-align: center; z-index: 2; }
+    
+    .landing-name { position: absolute; top: 8vh; font-family: 'Space Mono', monospace; font-size: 24px; letter-spacing: 10px; color: var(--text); text-transform: uppercase; text-align: center; z-index: 2; }
 
     #scope-wrap { position: absolute; bottom: 35vh; left: 50%; transform: translateX(-50%); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: filter 0.4s, transform 0.35s; z-index: 20; filter: drop-shadow(0 12px 24px rgba(61,43,61,0.08)); pointer-events: auto; }
     #scope-wrap:hover { filter: drop-shadow(0 16px 32px rgba(61,43,61,0.15)); transform: translate(-50%, -4px); }
@@ -160,6 +161,40 @@
     .skill-group-title { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 3px; color: var(--accent); text-transform: uppercase; margin-bottom: 20px; font-weight: 700; }
     .skill-list { display: flex; flex-wrap: wrap; gap: 16px; }
     .skill-pill { font-size: 18px; color: var(--text); border-bottom: 1px solid var(--accent-mid); padding-bottom: 4px; }
+
+    /* CONTACT PAGE SPECIFIC STYLES */
+    .micro-bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: 0.8; overflow: hidden; }
+    .flow-lines path {
+      stroke-dasharray: 12 150;
+      animation: micro-flow 15s linear infinite;
+    }
+    .flow-lines path:nth-child(1) { animation-duration: 12s; }
+    .flow-lines path:nth-child(2) { animation-duration: 18s; animation-direction: reverse; stroke: var(--accent); }
+    .flow-lines path:nth-child(3) { animation-duration: 10s; }
+    .flow-lines path:nth-child(4) { animation-duration: 22s; animation-direction: reverse; stroke: var(--accent); }
+    .flow-lines path:nth-child(5) { animation-duration: 14s; }
+    .flow-lines path:nth-child(6) { animation-duration: 19s; animation-direction: reverse; }
+    
+    @keyframes micro-flow {
+      from { stroke-dashoffset: 1000; }
+      to { stroke-dashoffset: 0; }
+    }
+
+    .contact-content { position: relative; z-index: 1; width: 100%; height: 100%; }
+    
+    .contact-panel {
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--desk);
+      padding: 48px;
+      border-radius: 8px;
+      max-width: 600px;
+      box-shadow: 0 16px 40px rgba(61, 43, 61, 0.05);
+      position: relative;
+    }
+
+    .contact-intro { font-size: 20px; font-weight: 300; line-height: 1.6; color: var(--text); margin-bottom: 40px; }
     
     .contact-links { display: flex; flex-direction: column; gap: 24px; }
     .contact-item { display: flex; align-items: center; gap: 24px; text-decoration: none; color: var(--text); transition: color 0.2s; width: fit-content; }
@@ -585,15 +620,53 @@
   </div>
 </div>
 
-<div class="screen hidden section-screen" id="s-contact">
-  <p class="s-back" onclick="backToLens('s-contact')">← back to lens</p>
-  <h1 class="s-title">Contact</h1>
-  <div class="s-rule"></div>
-  <p class="contact-intro">Interested in collaborating, or just want to talk nanoscience? Reach out.</p>
-  <div class="contact-links">
-    <a class="contact-item" href="mailto:you@email.com"><span class="c-platform">Email</span><span class="c-val">you@email.com</span></a>
-    <a class="contact-item" href="https://linkedin.com/in/yourhandle" target="_blank"><span class="c-platform">LinkedIn</span><span class="c-val">linkedin.com/in/yourhandle</span></a>
-    <a class="contact-item" href="https://github.com/yourhandle" target="_blank"><span class="c-platform">GitHub</span><span class="c-val">github.com/yourhandle</span></a>
+<!-- MODIFIED: Completely redesigned Contact section -->
+<div class="screen hidden section-screen" id="s-contact" style="position: relative; overflow: hidden;">
+  
+  <div class="micro-bg">
+    <svg viewBox="0 0 1000 800" preserveAspectRatio="xMidYMid slice" style="width: 100%; height: 100%; position: absolute; inset: 0; z-index: 0;">
+       <g stroke="var(--desk)" stroke-width="12" fill="none" stroke-linecap="round" stroke-linejoin="round">
+         <path d="M-50,200 H200 Q220,200 220,220 V400 Q220,420 240,420 H450" />
+         <path d="M1050,600 H800 Q780,600 780,580 V460 Q780,440 760,440 H550" />
+         <path d="M300,-50 V150 Q300,170 320,170 H400 Q420,170 420,190 V380" />
+         <path d="M700,850 V650 Q700,630 680,630 H600 Q580,630 580,610 V500" />
+         <path d="M-50,650 H150 Q170,650 170,630 V550 Q170,530 190,530 H400" />
+         <path d="M1050,150 H850 Q830,150 830,170 V300 Q830,320 810,320 H600" />
+       </g>
+       
+       <g class="flow-lines" stroke="var(--accent-mid)" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+         <path d="M-50,200 H200 Q220,200 220,220 V400 Q220,420 240,420 H450" />
+         <path d="M1050,600 H800 Q780,600 780,580 V460 Q780,440 760,440 H550" />
+         <path d="M300,-50 V150 Q300,170 320,170 H400 Q420,170 420,190 V380" />
+         <path d="M700,850 V650 Q700,630 680,630 H600 Q580,630 580,610 V500" />
+         <path d="M-50,650 H150 Q170,650 170,630 V550 Q170,530 190,530 H400" />
+         <path d="M1050,150 H850 Q830,150 830,170 V300 Q830,320 810,320 H600" />
+       </g>
+       
+       <g fill="var(--wall)" stroke="var(--accent-mid)" stroke-width="4">
+         <circle cx="450" cy="420" r="10" />
+         <circle cx="550" cy="440" r="10" />
+         <circle cx="420" cy="380" r="10" />
+         <circle cx="580" cy="500" r="10" />
+         <circle cx="400" cy="530" r="10" />
+         <circle cx="600" cy="320" r="10" />
+       </g>
+    </svg>
+  </div>
+
+  <div class="contact-content">
+    <p class="s-back" onclick="backToLens('s-contact')">← back to lens</p>
+    <h1 class="s-title">Contact</h1>
+    <div class="s-rule"></div>
+    
+    <div class="contact-panel">
+      <p class="contact-intro">Interested in collaborating, or just want to talk nanoscience? Reach out.</p>
+      <div class="contact-links">
+        <a class="contact-item" href="mailto:you@email.com"><span class="c-platform">Email</span><span class="c-val">you@email.com</span></a>
+        <a class="contact-item" href="https://linkedin.com/in/yourhandle" target="_blank"><span class="c-platform">LinkedIn</span><span class="c-val">linkedin.com/in/yourhandle</span></a>
+        <a class="contact-item" href="https://github.com/yourhandle" target="_blank"><span class="c-platform">GitHub</span><span class="c-val">github.com/yourhandle</span></a>
+      </div>
+    </div>
   </div>
 </div>
 
