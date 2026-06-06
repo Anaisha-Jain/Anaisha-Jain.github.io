@@ -112,10 +112,7 @@
     .prop-window     { left: calc(50% + 290px); bottom: 100px; width: 180px; z-index: 1; }
     .prop-shelf      { left: calc(50% + 120px); bottom: 180px; width: 160px; z-index: 2; }
 
-    @media (max-width: 750px) {
-      .prop, .ambient-light, .particle { opacity: 0; }
-    }
-
+   
     .screen { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; opacity: 1; transition: opacity 0.4s ease; z-index: 10; }
     .screen.hidden { opacity: 0; pointer-events: none; }
 
@@ -411,40 +408,26 @@
     @keyframes pulse { 0%, 100% { opacity: 0.8; transform: scale(1); } 50% { opacity: 1; transform: scale(1.02); } }
     @keyframes steam { 0% { opacity: 0; transform: translateY(0) scale(1); } 50% { opacity: 0.6; transform: translateY(-10px) scale(1.1); } 100% { opacity: 0; transform: translateY(-20px) scale(1.2); } }
     
-    @media (max-width: 850px) {
-  /* 1. Hide the cluttered desk props on small screens to save space */
-  .lab-equipment-layer, .ambient-light, .particle { 
-    display: none !important; 
+    @media (max-width: 750px) {
+  /* Keep the desk surface visible, but make it smaller */
+  .desk-surface {
+    height: 25vh !important;
   }
 
-  /* 2. Make the notebook stack vertically so it fits on a phone screen */
-  .notebook {
-    flex-direction: column !important;
-    overflow-y: auto !important;
-    margin: 10px !important;
+  /* Scale down the lab equipment so it fits the narrow width */
+  .lab-equipment-layer {
+    height: 250px !important;
+    transform: translateX(-50%) scale(0.6) !important; /* Shrinks the desk items to 60% size */
+    bottom: 25vh !important;
   }
 
-  .nb-spine {
-    display: none !important; /* Hide the spine on mobile */
-  }
-
-  .nb-page {
-    min-height: 50vh !important;
-  }
-
-  /* 3. Adjust the nav-nodes so they don't overlap on small screens */
-  .nav-node {
-    width: 70px !important;
-    height: 70px !important;
-  }
-  
-  /* Make the landing name smaller */
-  .landing-name {
-    font-size: 16px !important;
-    letter-spacing: 5px !important;
+  /* Ensure particles don't cover the screen */
+  .particle {
+    display: none !important;
   }
 }
-  </style>
+    
+</style>
 </head>
 <body>
 
@@ -728,7 +711,7 @@
       </g>
     </svg>
   </div>
-  <p class="click-hint">click to look inside</p>
+  <p class="click-hint">click the microscope to look inside!</p>
 </div>
 
 <div class="screen hidden" id="s-lens">
@@ -814,7 +797,10 @@
   <p class="s-back" onclick="backToLens('s-about')">← back to lens</p>
   <h1 class="s-title">About<br/>Me</h1>
   <div class="s-rule"></div>
-  <p class="about-bio">I am a <em>nanobiotechnology engineer</em> fascinated by the interface of biology and engineering at the molecular scale. My work sits at the intersection of biosensors and bioinformatics, where I design DNA aptamer systems and robotic integrations. I believe the most important problems in the world are solved at the scale of 10⁻⁹ metres.</p>
+  <p class="about-bio">I am a <em>nanobiotechnology engineer</em> at the University of Waterloo! I am 
+  fascinated by the interface of biology and nanoengineering at the molecular scale. 
+  My interest iwork sits at the intersection of biosensors and bioinformatics, where I design DNA aptamer systems and robotic integrations. 
+  I believe the most important problems in the world are solved at the scale of 10⁻⁹ metres.</p>
   <div class="about-tags">
     <span class="tag">Nanobiotechnology</span>
     <span class="tag">Biosensors</span>
