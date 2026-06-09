@@ -6,6 +6,35 @@
   <title>Portfolio</title>
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet"/>
   <style>
+    /* ── ABOUT ME TEXT COLORS (Darkened Original Palette) ── */
+    
+    /* The main "About Me" title - Darkest plum */
+    #s-about .s-title {
+      color: #1b141b; 
+    }
+
+    /* The main paragraph text - Dark plum */
+    #s-about .about-bio {
+      color: #2b202b; 
+      font-weight: 400; /* Bumping the weight slightly helps it read perfectly over the blur */
+    }
+
+    /* The italicized words - Keeping your exact original accent */
+    #s-about .about-bio em {
+      color: var(--accent); 
+    }
+    
+    /* The "← back to lens" button */
+    #s-about .s-back {
+      color: #2b202b; 
+    }
+
+    /* The tags at the bottom */
+    #s-about .tag {
+      color: var(--bg);
+      background: var(--text); /* Using your original text color as the tag background */
+      border: none;
+    }
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     
     :root {
@@ -408,6 +437,73 @@
     @keyframes pulse { 0%, 100% { opacity: 0.8; transform: scale(1); } 50% { opacity: 1; transform: scale(1.02); } }
     @keyframes steam { 0% { opacity: 0; transform: translateY(0) scale(1); } 50% { opacity: 0.6; transform: translateY(-10px) scale(1.1); } 100% { opacity: 0; transform: translateY(-20px) scale(1.2); } }
     
+    /* AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH */
+    /* ── LIQUID AURORA BACKGROUND ── */
+    .aurora-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+      background: var(--bg);
+    }
+    
+    .aurora-container {
+      position: absolute;
+      inset: -20%; /* Bleed over the edges so the blur doesn't cut off */
+      width: 140%;
+      height: 140%;
+      filter: blur(120px); /* This is the magic that creates the liquid mesh */
+      opacity: 0.6; /* Keeps it subtle so your text stays readable */
+    }
+
+    .aurora-blob {
+      position: absolute;
+      border-radius: 50%;
+      animation: aurora-morph 15s ease-in-out infinite alternate;
+    }
+
+    .blob-peach {
+      top: 0%;
+      left: 10%;
+      width: 50vw;
+      height: 50vw;
+      background: var(--peach);
+      animation-delay: 0s;
+    }
+
+    .blob-plum {
+      bottom: 10%;
+      right: 10%;
+      width: 60vw;
+      height: 50vw;
+      background: var(--accent);
+      animation-delay: -5s;
+      animation-direction: alternate-reverse;
+    }
+
+    .blob-sage {
+      top: 30%;
+      left: 50%;
+      width: 45vw;
+      height: 45vw;
+      background: var(--sage);
+      animation-delay: -10s;
+    }
+
+    @keyframes aurora-morph {
+      0% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(-10vw, 15vh) scale(1.1); }
+      66% { transform: translate(15vw, -10vh) scale(0.9); }
+      100% { transform: translate(5vw, 10vh) scale(1.2); }
+    }
+
+
+
+
+
+
+    
     @media (max-width: 750px) {
   /* Keep the desk surface visible, but make it smaller */
   .desk-surface {
@@ -793,23 +889,29 @@
 </div>
 
 <!-- ABOUT -->
-<div class="screen hidden section-screen" id="s-about">
-  <p class="s-back" onclick="backToLens('s-about')">← back to lens</p>
-  <h1 class="s-title">About<br/>Me</h1>
-  <div class="s-rule"></div>
-  <p class="about-bio">I am a <em>nanobiotechnology engineer</em> at the University of Waterloo! I am 
-  fascinated by the interface of biology and nanoengineering at the molecular scale. 
-  My interest iwork sits at the intersection of biosensors and bioinformatics, where I design DNA aptamer systems and robotic integrations. 
-  I believe the most important problems in the world are solved at the scale of 10⁻⁹ metres.</p>
-  <div class="about-tags">
-    <span class="tag">Robotics</span>
-    <span class="tag">Coding</span>
-    <span class="tag">Nanobiotechnology</span>
-    <span class="tag">Biosensors</span>
-    <span class="tag">Aptamers</span>
-    <span class="tag">Bioinformatics</span>
+<div class="screen hidden section-screen" id="s-about" style="position: relative;">
+  
+  <div class="aurora-bg">
+    <div class="aurora-container">
+      <div class="aurora-blob blob-peach"></div>
+      <div class="aurora-blob blob-plum"></div>
+      <div class="aurora-blob blob-sage"></div>
+    </div>
+  </div>
+
+  <div style="position: relative; z-index: 1; width: 100%;">
+    <p class="s-back" onclick="backToLens('s-about')">← Back to lens</p>
+    <h1 class="s-title">About<br/>Me</h1>
+    <div class="s-rule"></div>
+    <p class="about-bio">I am a <em>nanotechnology engineering</em> student at the University of Waterloo building 
+      at the intersection of hardware, code, and biology. 
+      I spend my time designing DNA aptamer systems, engineering robotic integrations, and developing bioinformatics pipelines, 
+      because I truly believe the most important problems in the world are solved at the scale of 10⁻⁹ metres. 
+      When I step away from the lab bench or my IDE, 
+    I'm usually building projects, hanging out with my friends at the library, or falling down a deep Wikipedia rabbit hole about Dinosaurs!</p>
   </div>
 </div>
+
 
 <!-- PROJECTS -->
 <div class="screen hidden section-screen" id="s-projects">
