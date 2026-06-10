@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bioinformatics</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    
+    :root {
+      --bg: #fcfbfe;         
+      --accent: #b58cb5;     
+      --accent-dim: rgba(181, 140, 181, 0.1);
+      --text: #453445;       
+      --muted: #958495;      
+      --peach: #ffbba6;      
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Cormorant Garamond', serif;
+      margin: 0;
+      padding: 6vh 4vw;
+      display: flex;
+      justify-content: center;
+    }
+
+    /* ── The "Document" Container ── */
+    .project-container {
+      background: #ffffff;
+      max-width: 900px;
+      width: 100%;
+      padding: 60px 80px;
+      border-radius: 8px;
+      box-shadow: 0 20px 60px rgba(61, 43, 61, 0.05);
+      border: 1px solid rgba(181, 140, 181, 0.1);
+    }
+
+    .back-btn {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: var(--muted);
+      text-transform: uppercase;
+      text-decoration: none;
+      display: inline-block;
+      margin-bottom: 40px;
+      transition: color 0.2s;
+    }
+
+    .back-btn:hover { color: var(--accent); }
+
+    h1 {
+      font-size: clamp(40px, 5vw, 56px);
+      font-weight: 300;
+      font-style: italic;
+      margin: 0 0 16px 0;
+      line-height: 1.1;
+    }
+
+    .rule {
+      width: 64px;
+      height: 2px;
+      background: var(--accent);
+      margin-bottom: 30px;
+    }
+
+    /* ── Tech Stack Tags ── */
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 40px;
+    }
+
+    .tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-dim);
+      padding: 6px 12px;
+      border-radius: 4px;
+    }
+
+    /* ── The TL;DR / Abstract Box ── */
+    .abstract-box {
+      background: #fef8ec;
+      border-left: 2px solid var(--peach);
+      padding: 24px 32px;
+      margin-bottom: 40px;
+      border-radius: 0 4px 4px 0;
+    }
+
+    .abstract-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--peach);
+      margin: 0 0 12px 0;
+      font-weight: 700;
+    }
+
+    p {
+      font-size: 20px;
+      font-weight: 300;
+      line-height: 1.8;
+      color: var(--text);
+      margin: 0 0 24px 0;
+    }
+
+    h2 {
+      font-size: 32px;
+      font-weight: 400;
+      margin: 40px 0 16px 0;
+    }
+
+    /* ── Project Figures & Images ── */
+    .figure-wrapper {
+      margin: 32px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .project-img {
+      width: 100%;
+      max-height: 500px;
+      object-fit: cover; /* Keeps the image from stretching */
+      border-radius: 6px;
+      box-shadow: 0 8px 24px rgba(61, 43, 61, 0.1);
+      border: 1px solid rgba(181, 140, 181, 0.2);
+    }
+
+    .figure-caption {
+      margin-top: 12px;
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-align: center;
+    }
+    
+    .figure-caption strong {
+      color: var(--accent);
+    }
+
+    /* ── Clean Data Tables ── */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 30px 0;
+      font-size: 18px;
+    }
+
+    .data-table th {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: left;
+      padding: 16px 12px;
+      border-bottom: 1px solid var(--accent);
+    }
+
+    .data-table td {
+      padding: 16px 12px;
+      border-bottom: 1px solid rgba(181, 140, 181, 0.2);
+      font-weight: 300;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="project-container">
+    <a href="index.html#projects" class="back-btn">← Back to Projects</a>
+
+    <h1>Drug Discovery Using Machine Learning and Data Analysis</h1>
+    <div class="rule"></div>
+
+    <div class="tag-row">
+      <span class="tag">Python</span>
+      <span class="tag">Scikit-Learn</span>
+      <span class="tag">Matplotlib</span>
+      <span class="tag">Pandas</span>
+      <span class="tag">Data Science</span>
+      <span class="tag">Machine Learning Model</span>
+      <span class="tag">ChEMBL bioactivity data</span>
+      <span class="tag">Drug Delivery</span>
+    </div>
+
+    <div class="abstract-box">
+      <p class="abstract-title">Abstract</p>
+      <p style="margin:0; font-style: italic; font-size: 18px;">
+        <li>Python programming for scientific and biomedical applications.</li>
+        <li>Fundamentals of bioinformatics and computational drug discovery</li>
+        <li>How biological and chemical datasets are collected and analyzed</li>
+        <li>Data preprocessing and cleaning techniques</li>
+        <li>Exploratory data analysis (EDA) and data visualization</li>
+        <li>Machine learning concepts, including model training and evaluation</li>
+        <li>How AI can be applied to predict molecular or drug-related properties</li>
+        <li>Statistical analysis and interpretation of scientific data</li>
+        <li>Best practices for organizing and working with large datasets</li>
+        <li>The role of computational tools in modern pharmaceutical research</li>
+      </p>
+    </div>
+
+    <h2>Methodology</h2>
+    <p>I am synthesizing extensive biochemical literature to evaluate complex aptamer binding affinities (Kd) and biosensor
+       integration strategies for environmental monitoring by using SELEX, DNA aptamer targets like hydoquinone, resorcinol, phenol.
+       Furthermore, I am also conducting rigorous literature reviews, managing large bibliographic databases, and ensuring strict adherence to
+       academic formatting and citation standards for journal submission.
+
+    </p>
+    
+    <div class="figure-wrapper">
+      <img src="bench-setup.jpg" alt="Lab bench setup with Varian Cary Eclipse Fluorescence Spectrophotometer" class="project-img" />
+      <p class="figure-caption"><strong>Figure 1:</strong> Experimental setup for characterizing aptamer binding kinetics and fluorescence assays at the bench.</p>
+    </div>
+  </div>
+
+</body>
+</html>

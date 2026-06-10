@@ -286,6 +286,7 @@
     .prop-labgear    { left: calc(50% + 340px); width: 120px; z-index: 5; }
     .prop-window     { left: calc(50% + 290px); bottom: 100px; width: 180px; z-index: 1; }
     .prop-shelf      { left: calc(50% + 120px); bottom: 180px; width: 160px; z-index: 2; }
+    
     /* ── TEDx BADGE PROP ── */
     .prop-ted-badge { 
       position: absolute;
@@ -369,11 +370,125 @@
     .about-tags { display: flex; flex-wrap: wrap; gap: 12px; }
     .tag { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); border: 1px solid var(--accent-mid); padding: 8px 16px; border-radius: 4px; background: rgba(255,255,255,0.5); }
     
-    .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; width: 100%; max-width: 1000px; }
-    .project-card { border: 1px solid #eadded; padding: 32px; background: #ffffff; cursor: pointer; transition: all 0.3s; position: relative; overflow: hidden; border-radius: 6px; }
-    .project-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 0; background: var(--accent); transition: height 0.3s ease; }
-    .project-card:hover { border-color: var(--accent-mid); box-shadow: 0 12px 32px rgba(181, 140, 181, 0.1); transform: translateY(-4px); }
-    .project-card:hover::before { height: 100%; }
+    /* ── PROJECT FILTERS ── */
+    .project-filters {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 40px;
+    }
+    .filter-btn {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: transparent;
+      border: 1px solid var(--desk);
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .filter-btn:hover, .filter-btn.active {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(181, 140, 181, 0.08);
+    }
+
+    /* ── LAB FOLDER GRID ── */
+    .projects-grid { 
+      display: grid; 
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+      gap: 24px; 
+      width: 100%; 
+      max-width: 1000px; 
+    }
+    
+    .folder-card {
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      margin-top: 15px; /* Leaves space for the tab to stick out */
+      text-decoration: none; /* In case you wrap them in <a> tags */
+    }
+    
+    .folder-card:hover { transform: translateY(-8px); }
+
+    /* The Manila Folder Tab */
+    .folder-tab {
+      align-self: flex-start;
+      background: #e8dcc7; /* Classic manila color */
+      padding: 6px 16px 14px;
+      border-radius: 6px 6px 0 0;
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      color: #8c7e6a;
+      font-weight: bold;
+      margin-bottom: -10px; /* Pulls it down behind the front cover */
+      position: relative;
+      z-index: 1;
+      box-shadow: inset 0 2px 4px rgba(255,255,255,0.6);
+      border-left: 1px solid rgba(255,255,255,0.4);
+      border-top: 1px solid rgba(255,255,255,0.4);
+    }
+
+    /* The Main Folder Body */
+    .folder-body {
+      background: #e8dcc7;
+      border-radius: 0 6px 6px 6px;
+      padding: 28px;
+      position: relative;
+      z-index: 2;
+      box-shadow: 0 12px 30px rgba(61,43,61,0.08), inset 0 2px 4px rgba(255,255,255,0.6);
+      min-height: 180px;
+      display: flex;
+      flex-direction: column;
+      border-left: 1px solid rgba(255,255,255,0.5);
+      border-top: 1px solid rgba(255,255,255,0.5);
+    }
+
+    /* Gives the illusion of a front flap */
+    .folder-body::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      box-shadow: inset -20px -20px 40px rgba(0,0,0,0.04);
+      pointer-events: none;
+    }
+
+    .folder-card .project-name { 
+      font-size: 24px; 
+      color: #4a4238; 
+      margin-bottom: 8px; 
+      line-height: 1.2;
+    }
+    
+    .folder-card .project-desc { 
+      font-size: 16px; 
+      color: #7a6e5d; 
+      line-height: 1.6; 
+      flex: 1; 
+    }
+    
+    .folder-tag {
+      align-self: flex-start;
+      font-family: 'Space Mono', monospace; 
+      font-size: 9px;
+      text-transform: uppercase; 
+      letter-spacing: 2px;
+      color: #ffffff; 
+      background: #c2b49b;
+      padding: 4px 8px; 
+      border-radius: 4px; 
+      margin-top: 16px;
+    }
+    
+    /* Utility class for JS filtering */
+    .folder-card.hidden-folder { display: none; }
+
     .project-num { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 3px; color: var(--muted); margin-bottom: 16px; }
     .project-name { font-size: 24px; font-weight: 400; color: var(--text); margin-bottom: 12px; line-height: 1.2; }
     .project-desc { font-size: 16px; color: var(--muted); line-height: 1.6; margin-bottom: 24px; }
@@ -693,12 +808,6 @@
       100% { transform: translate(5vw, 10vh) scale(1.2); }
     }
 
-
-
-
-
-
-    
     @media (max-width: 750px) {
   /* Keep the desk surface visible, but make it smaller */
   .desk-surface {
@@ -1156,7 +1265,7 @@
       </g>
     </svg>
   </div>
-  <p class="click-hint">click the microscope to look inside!</p>
+  <p class="click-hint">Click the microscope to look inside!</p>
 
 
 </div>
@@ -1342,13 +1451,49 @@
   <p class="s-back" onclick="backToLens('s-projects')">← Back to lens</p>
   <h1 class="s-title">Projects</h1>
   <div class="s-rule"></div>
+
+  <!-- The Sorting Filters -->
+  <div class="project-filters">
+    <button class="filter-btn active" onclick="filterProjects('all', event)">All Files</button>
+    <button class="filter-btn" onclick="filterProjects('software', event)">Software</button>
+    <button class="filter-btn" onclick="filterProjects('hardware', event)">Hardware</button>
+  </div>
+
   <div class="projects-grid">
-    <div class="project-card"><p class="project-num">01 —</p><p class="project-name">DNA Biosensors</p><p class="project-desc">Analysis of binding affinities and selection processes for nanobiosystems.</p><a class="project-link" href="#" target="_blank">View Project →</a></div>
-    <div class="project-card"><p class="project-num">02 —</p><p class="project-name">Robotic Hand Interface</p><p class="project-desc">Hardware-software integration using Arduino, Python, and computer vision for gesture control.</p><a class="project-link" href="#" target="_blank">View Project →</a></div>
-    <div class="project-card"><p class="project-num">03 —</p><p class="project-name">Bioinformatics Pipeline</p><p class="project-desc">Extracting and processing drug delivery data from the ChEMBL database utilizing Python.</p><a class="project-link" href="#" target="_blank">View Project →</a></div>
+    
+    <!-- 01: Hardware Folder -->
+    <!-- Notice how onclick takes you to a new page (e.g., biosensors.html) -->
+    <div class="folder-card" data-category="hardware" onclick="window.location.href='biosensors.html'">
+      <div class="folder-tab">FILE 01</div>
+      <div class="folder-body">
+        <p class="project-name">DNA Biosensors</p>
+        <p class="project-desc">Analysis of binding affinities and selection processes for nanobiosystems.</p>
+        <span class="folder-tag">Hardware</span>
+      </div>
+    </div>
+
+    <!-- 02: Hardware Folder -->
+    <div class="folder-card" data-category="hardware" onclick="window.location.href='robotic-hand.html'">
+      <div class="folder-tab">FILE 02</div>
+      <div class="folder-body">
+        <p class="project-name">Robotic Hand Interface</p>
+        <p class="project-desc">Hardware-software integration using Arduino, Python, and computer vision for gesture control.</p>
+        <span class="folder-tag">Hardware</span>
+      </div>
+    </div>
+
+    <!-- 03: Software Folder -->
+    <div class="folder-card" data-category="software" onclick="window.location.href='bioinformatics.html'">
+      <div class="folder-tab">FILE 03</div>
+      <div class="folder-body">
+        <p class="project-name">Bioinformatics Pipeline</p>
+        <p class="project-desc">Extracting and processing drug delivery data from the ChEMBL database utilizing Python.</p>
+        <span class="folder-tag">Software</span>
+      </div>
+    </div>
+
   </div>
 </div>
-
 <!-- SKILLS — notebook layout -->
 <div class="screen hidden" id="s-skills">
   <div class="nb-topbar">
@@ -1400,7 +1545,7 @@
 
     <div class="nb-group">
       <p class="nb-group-label">Research topics</p>
-      <div class="nb-skill-row"><span class="nb-bullet"></span><span class="nb-skill-name">DNA/RNA Aptamers, Molecular Recognition, Binding Kinetics ($K_d$ Analysis), Microfluidics</span></div>
+      <div class="nb-skill-row"><span class="nb-bullet"></span><span class="nb-skill-name">DNA/RNA Aptamers, Molecular Recognition, Binding Kinetics (Kd Analysis), Microfluidics</span></div>
     </div>
 
   </div>
@@ -1415,8 +1560,8 @@
     <div class="nb-page nb-right">
       <canvas id="ink-canvas"></canvas>
       <div class="ink-hint" id="ink-hint">
-        <span class="ink-hint-main">write something here...</span>
-        <span class="ink-hint-sub">it will disappear</span>
+        <span class="ink-hint-main">Write something here...</span>
+        <span class="ink-hint-sub">It will disappear</span>
       </div>
       <span class="nb-page-num">p. 02</span>
     </div>
@@ -1511,7 +1656,7 @@
 
 <!-- TEDx CUE CARD SCREEN -->
 <div class="screen hidden" id="s-ted">
-  <p class="s-back" onclick="backToDesk()">← back to desk</p>
+  <p class="s-back" onclick="backToDesk()">← Back to desk</p>
   
   <div class="cue-card">
     <div class="cue-content">
@@ -1732,6 +1877,33 @@ function openPDF() {
 function closePDF() {
   document.getElementById('pdf-modal').classList.add('hidden');
 }
+
+// ── Project File Filtering ──
+function filterProjects(category, event) {
+  // 1. Highlight the active button
+  document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+
+  // 2. Hide or show the folders based on the data-category
+  const folders = document.querySelectorAll('.folder-card');
+  folders.forEach(folder => {
+    if (category === 'all' || folder.getAttribute('data-category') === category) {
+      folder.classList.remove('hidden-folder');
+    } else {
+      folder.classList.add('hidden-folder');
+    }
+  });
+}
+
+// ── Return Directly to Projects Page ──
+window.addEventListener('DOMContentLoaded', () => {
+  if (window.location.hash === '#projects') {
+    // Hide the landing desk and immediately show the projects screen
+    document.getElementById('s-landing').classList.add('hidden');
+    document.getElementById('s-projects').classList.remove('hidden');
+  }
+});
+
 
 
 </script>
