@@ -717,6 +717,147 @@
     display: none !important;
   }
 }
+
+
+/* ── ABOUT ME "CURRENTLY" SHELF ── */
+    .about-shelf-wrap {
+      margin-top: 60px;
+      width: 100%;
+      max-width: 800px; /* Made wider for the bigger props */
+    }
+
+    .shelf-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    .about-shelf {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-evenly; /* Spreads them out nicely */
+      gap: 20px;
+      padding-bottom: 15px; /* Lifts the items up to sit exactly on the shelf */
+      position: relative;
+    }
+
+    /* THE PHYSICAL 3D SHELF */
+    .about-shelf::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 20px; /* The thickness of the shelf */
+      background: var(--desk);
+      border-top: 5px solid #d8cce6;
+      border-radius: 4px;
+      box-shadow: 0 16px 32px rgba(61,43,61,0.15);
+      z-index: 0;
+    }
+
+    /* THE SHELF BRACKETS (Underneath) */
+    .about-shelf::before {
+      content: '';
+      position: absolute;
+      bottom: -15px;
+      left: 10%;
+      width: 80%;
+      height: 15px;
+      border-left: 14px solid #d8cce6;
+      border-right: 14px solid #d8cce6;
+      z-index: 0;
+      opacity: 0.6;
+    }
+
+    .shelf-item {
+      position: relative;
+      z-index: 1; /* Puts the items on top of the shelf */
+      cursor: pointer;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      margin-bottom: -2px; /* Sinks them perfectly onto the shelf edge */
+    }
+
+    .shelf-item:hover {
+      transform: translateY(-8px); /* Bigger bounce for bigger props! */
+    }
+
+    .prop-item {
+      display: block;
+      filter: drop-shadow(0 6px 10px rgba(61,43,61,0.15));
+    }
+
+    /* Tooltip Hover Styling for Book, Vinyl, Box */
+    .shelf-item[data-tooltip]::before {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: 110%;
+      left: 50%;
+      transform: translateX(-50%) translateY(10px);
+      background: var(--text);
+      color: var(--bg);
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      padding: 8px 12px;
+      border-radius: 4px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.2s ease;
+      z-index: 10;
+    }
+
+    .shelf-item[data-tooltip]:hover::before {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ── DINO EGG ANIMATION ── */
+    .crack-line {
+      stroke-dasharray: 50;
+      stroke-dashoffset: 50;
+      transition: stroke-dashoffset 0.6s ease-in-out;
+    }
+
+    .cracked .crack-line {
+      stroke-dashoffset: 0;
+    }
+
+    .cracked .prop-item {
+      animation: egg-shake 0.4s ease-in-out;
+    }
+
+    .egg-text {
+      position: absolute;
+      bottom: 110%;
+      right: 0;
+      background: var(--text);
+      color: var(--peach);
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      padding: 8px 12px;
+      border-radius: 4px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s ease;
+      transform: translateY(10px);
+    }
+
+    .cracked .egg-text {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @keyframes egg-shake {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(-10deg); }
+      50% { transform: rotate(10deg); }
+      75% { transform: rotate(-5deg); }
+    }
     
 </style>
 </head>
@@ -859,7 +1000,7 @@
       <rect x="15" y="25" width="40" height="4" fill="#d8cce6" rx="2"/>
     </svg>
 
-    <svg class="prop prop-mug" viewBox="0 0 40 60" fill="none">
+    <svg class="prop prop-mug" viewBox="0 0 50 60" fill="none">
       <path d="M 15 25 Q 10 15 15 5 T 15 -5" stroke="#d8cce6" stroke-width="2" fill="none" style="animation: steam 3s infinite linear; opacity: 0;"/>
       <path d="M 25 30 Q 30 20 25 10 T 25 0" stroke="#d8cce6" stroke-width="2" fill="none" style="animation: steam 3s infinite linear 1.5s; opacity: 0;"/>
       <path d="M 30 35 C 45 35 45 55 30 55" fill="none" stroke="#453445" stroke-width="4"/>
@@ -1120,6 +1261,79 @@
       When I step away from the lab bench or my IDE, 
     I'm usually building projects, hanging out with my friends at the library, or falling down a deep Wikipedia rabbit hole about Dinosaurs!</p>
   </div>
+
+  <!-- INTERACTIVE "CURRENTLY" SHELF -->
+   <!-- INTERACTIVE "CURRENTLY" SHELF -->
+    <div class="about-shelf-wrap">
+      <p class="shelf-title">Currently...</p>
+      <div class="about-shelf">
+        
+        <!-- 1. The Book -->
+        <div class="shelf-item" data-tooltip="📖 Reading: The Alchemist by Paulo Coelho">
+          <svg viewBox="0 0 40 60" width="80" height="120" class="prop-item">
+            <!-- Book pages -->
+            <rect x="12" y="8" width="20" height="48" fill="#ffffff" rx="1" transform="rotate(8)"/>
+            <!-- Book Cover -->
+            <rect x="8" y="5" width="24" height="52" fill="#b58cb5" rx="2" transform="rotate(8)"/>
+            <rect x="12" y="10" width="16" height="4" fill="rgba(255,255,255,0.3)" transform="rotate(8)"/>
+          </svg>
+        </div>
+
+        <!-- 2. The Vinyl Record -->
+        <div class="shelf-item" data-tooltip="🎧 Listening to: Purple Rain by Prince">
+          <svg viewBox="0 0 60 60" width="120" height="120" class="prop-item">
+            <!-- Record sticking out -->
+            <circle cx="35" cy="25" r="20" fill="#2b1d3d"/>
+            <circle cx="35" cy="25" r="7" fill="#e62b1e"/>
+            <circle cx="35" cy="25" r="1.5" fill="#fcfbfe"/>
+            <!-- Album Sleeve -->
+            <rect x="0" y="15" width="40" height="40" fill="#ffbba6" rx="2"/>
+            <circle cx="20" cy="35" r="10" fill="rgba(255,255,255,0.3)"/>
+          </svg>
+        </div>
+
+        <!-- 3. The Tinkering Box -->
+        <div class="shelf-item" data-tooltip="🛠️ Tinkering with: New Python bioinformatics script">
+          <svg viewBox="0 0 50 60" width="100" height="120" class="prop-item">
+            <!-- Box Body -->
+            <rect x="5" y="30" width="40" height="25" fill="#d8cce6" rx="1"/>
+            <line x1="5" y1="40" x2="45" y2="40" stroke="rgba(255,255,255,0.4)" stroke-width="2"/>
+            <!-- Box Flaps open -->
+            <path d="M 5 30 L 0 15 L 20 30 Z" fill="#b58cb5"/>
+            <path d="M 45 30 L 50 15 L 30 30 Z" fill="#b58cb5"/>
+            <!-- Wires sticking out -->
+            <path d="M 20 30 Q 15 15 25 10" fill="none" stroke="#e62b1e" stroke-width="1.5"/>
+            <path d="M 30 30 Q 35 20 25 15" fill="none" stroke="#a8c3a6" stroke-width="1.5"/>
+          </svg>
+        </div>
+
+        <!-- 4. The Dino Egg -->
+        <div class="shelf-item egg-container" id="dino-egg-wrap" onclick="crackEgg()">
+          <svg viewBox="0 0 50 60" width="100" height="120" class="prop-item" id="dino-egg">
+            <!-- Egg Base -->
+            <path d="M 25 10 C 45 10 45 55 25 55 C 5 55 5 10 25 10 Z" fill="#a8c3a6"/>
+            <!-- Spots -->
+            <circle cx="15" cy="30" r="3" fill="#8fa88d"/>
+            <circle cx="35" cy="40" r="4" fill="#8fa88d"/>
+            <circle cx="25" cy="48" r="2" fill="#8fa88d"/>
+            <!-- Hidden Crack Line -->
+            <polyline points="10,30 20,25 25,35 35,28 40,32" fill="none" stroke="#453445" stroke-width="2" class="crack-line" id="egg-crack"/>
+          </svg>
+          <!-- Hidden Text that appears when cracked -->
+          <div class="egg-text" id="egg-text">🦖 Learning about Deinonychus!</div>
+        </div>
+
+      </div>
+    </div>
+
+
+
+
+
+
+
+
+
 </div>
 
 
@@ -1320,6 +1534,13 @@
 </div>
 
 <script>
+
+// ── Dino Egg Animation ──
+function crackEgg() {
+  const eggWrap = document.getElementById('dino-egg-wrap');
+  // Toggles the class so you can click it again to "heal" the egg if you want!
+  eggWrap.classList.toggle('cracked');
+}
 const overlay = document.getElementById('overlay');
 const tunnel  = document.getElementById('zoom-tunnel');
 
