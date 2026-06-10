@@ -370,6 +370,17 @@
     .about-tags { display: flex; flex-wrap: wrap; gap: 12px; }
     .tag { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); border: 1px solid var(--accent-mid); padding: 8px 16px; border-radius: 4px; background: rgba(255,255,255,0.5); }
     
+    /* ── PROJECTS PAGE PAINTED BACKGROUND ── */
+    #s-projects {
+      background: 
+        radial-gradient(circle at 15% 10%, rgba(255, 187, 166, 0.4) 0%, transparent 40%),
+        radial-gradient(circle at 85% 80%, rgba(181, 140, 181, 0.5) 0%, transparent 50%),
+        radial-gradient(circle at 50% 40%, rgba(168, 195, 166, 0.3) 0%, transparent 60%),
+        var(--bg);
+      background-size: cover;
+    }
+    
+    
     /* ── PROJECT FILTERS ── */
     .project-filters {
       display: flex;
@@ -1497,7 +1508,7 @@
       <div class="folder-tab">FILE 04</div>
       <div class="folder-body">
         <p class="project-name">Tidal-Women's Health Monitoring App</p>
-        <p class="project-desc">Healthcare app targeted for women, 1st Place for Data Visualisation. </p>
+        <p class="project-desc">Healthcare app targeted for women, 1st Place for Data Visualisation.</p>
         <span class="folder-tag">Software</span>
       </div>
     </div>
