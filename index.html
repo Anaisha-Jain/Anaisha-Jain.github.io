@@ -370,17 +370,6 @@
     .about-tags { display: flex; flex-wrap: wrap; gap: 12px; }
     .tag { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); border: 1px solid var(--accent-mid); padding: 8px 16px; border-radius: 4px; background: rgba(255,255,255,0.5); }
     
-    /* ── PROJECTS PAGE PAINTED BACKGROUND ── */
-    #s-projects {
-      background: 
-        radial-gradient(circle at 15% 10%, rgba(255, 187, 166, 0.4) 0%, transparent 40%),
-        radial-gradient(circle at 85% 80%, rgba(181, 140, 181, 0.5) 0%, transparent 50%),
-        radial-gradient(circle at 50% 40%, rgba(168, 195, 166, 0.3) 0%, transparent 60%),
-        var(--bg);
-      background-size: cover;
-    }
-    
-    
     /* ── PROJECT FILTERS ── */
     .project-filters {
       display: flex;
@@ -1458,63 +1447,66 @@
 
 
 <!-- PROJECTS -->
-<div class="screen hidden section-screen" id="s-projects">
-  <p class="s-back" onclick="backToLens('s-projects')">← Back to lens</p>
-  <h1 class="s-title">Projects</h1>
-  <div class="s-rule"></div>
+<div class="screen hidden section-screen" id="s-projects" style="background: #fef8ec;">
+  
+  <canvas id="ascii-canvas" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; pointer-events: none; opacity: 0.6;"></canvas>
 
-  <!-- The Sorting Filters -->
-  <div class="project-filters">
-    <button class="filter-btn active" onclick="filterProjects('all', event)">All Files</button>
-    <button class="filter-btn" onclick="filterProjects('software', event)">Software</button>
-    <button class="filter-btn" onclick="filterProjects('hardware', event)">Hardware</button>
-  </div>
-
-  <div class="projects-grid">
+  <div style="position: relative; z-index: 1; width: 100%; display: flex; flex-direction: column; align-items: flex-start;">
     
-    <!-- 01: Hardware Folder -->
-    <!-- Notice how onclick takes you to a new page (e.g., biosensors.html) -->
-    <div class="folder-card" data-category="hardware" onclick="window.location.href='biosensors.html'">
-      <div class="folder-tab">FILE 01</div>
-      <div class="folder-body">
-        <p class="project-name">DNA Biosensors</p>
-        <p class="project-desc">Analysis of binding affinities and selection processes for nanobiosystems.</p>
-        <span class="folder-tag">Hardware</span>
-      </div>
+    <p class="s-back" onclick="backToLens('s-projects')">← Back to lens</p>
+    <h1 class="s-title">Projects</h1>
+    <div class="s-rule"></div>
+
+    <div class="project-filters">
+      <button class="filter-btn active" onclick="filterProjects('all', event)">All Files</button>
+      <button class="filter-btn" onclick="filterProjects('software', event)">Software</button>
+      <button class="filter-btn" onclick="filterProjects('hardware', event)">Hardware</button>
     </div>
 
-    <!-- 02: Hardware Folder -->
-    <div class="folder-card" data-category="hardware" onclick="window.location.href='robotic-hand.html'">
-      <div class="folder-tab">FILE 02</div>
-      <div class="folder-body">
-        <p class="project-name">Robotic Hand Interface</p>
-        <p class="project-desc">Hardware-software integration using Arduino, Python, and computer vision for gesture control.</p>
-        <span class="folder-tag">Hardware</span>
+    <div class="projects-grid">
+      
+      <div class="folder-card" data-category="hardware" onclick="window.location.href='biosensors.html'">
+        <div class="folder-tab">FILE 01</div>
+        <div class="folder-body">
+          <p class="project-name">DNA Biosensors</p>
+          <p class="project-desc">Analysis of binding affinities and selection processes for nanobiosystems.</p>
+          <span class="folder-tag">Hardware</span>
+        </div>
       </div>
-    </div>
 
-    <!-- 03: Software Folder -->
-    <div class="folder-card" data-category="software" onclick="window.location.href='bioinformatics.html'">
-      <div class="folder-tab">FILE 03</div>
-      <div class="folder-body">
-        <p class="project-name">Drug Discovery Using Machine Learning and Data Analysis</p>
-        <p class="project-desc">Extracting and processing drug delivery data from the ChEMBL database utilizing Python.</p>
-        <span class="folder-tag">Software</span>
+      <div class="folder-card" data-category="hardware" onclick="window.location.href='robotic-hand.html'">
+        <div class="folder-tab">FILE 02</div>
+        <div class="folder-body">
+          <p class="project-name">Robotic Hand Interface</p>
+          <p class="project-desc">Hardware-software integration using Arduino, Python, and computer vision for gesture control.</p>
+          <span class="folder-tag">Hardware</span>
+        </div>
       </div>
-    </div>
 
-    <!-- 04: Software Folder -->
-    <div class="folder-card" data-category="software" onclick="window.location.href='Tidal-Hackathon.html'">
-      <div class="folder-tab">FILE 04</div>
-      <div class="folder-body">
-        <p class="project-name">Tidal-Women's Health Monitoring App</p>
-        <p class="project-desc">Healthcare app targeted for women, 1st Place for Data Visualisation.</p>
-        <span class="folder-tag">Software</span>
+      <div class="folder-card" data-category="software" onclick="window.location.href='bioinformatics.html'">
+        <div class="folder-tab">FILE 03</div>
+        <div class="folder-body">
+          <p class="project-name">Drug Discovery Using Machine Learning and Data Analysis</p>
+          <p class="project-desc">Extracting and processing drug delivery data from the ChEMBL database utilizing Python.</p>
+          <span class="folder-tag">Software</span>
+        </div>
       </div>
-    </div>
 
-  </div>
+      <div class="folder-card" data-category="software" onclick="window.location.href='Tidal-Hackathon.html'">
+        <div class="folder-tab">FILE 04</div>
+        <div class="folder-body">
+          <p class="project-name">Tidal-Women's Health Monitoring App</p>
+          <p class="project-desc">Healthcare app targeted for women, 1st Place for Data Visualisation.</p>
+          <span class="folder-tag">Software</span>
+        </div>
+      </div>
+
+    </div>
+  </div> 
 </div>
+
+
+
 <!-- SKILLS — notebook layout -->
 <div class="screen hidden" id="s-skills">
   <div class="nb-topbar">
@@ -1924,6 +1916,64 @@ window.addEventListener('DOMContentLoaded', () => {
     document.getElementById('s-projects').classList.remove('hidden');
   }
 });
+
+// ── Return Directly to Projects Page ──
+window.addEventListener('DOMContentLoaded', () => {
+  if (window.location.hash === '#projects') {
+    // Hide the landing desk and immediately show the projects screen
+    document.getElementById('s-landing').classList.add('hidden');
+    document.getElementById('s-projects').classList.remove('hidden');
+  }
+});
+
+// ── Pastel ASCII Matrix Background (Nerd-Chic) ──
+function initAsciiMatrix() {
+  const canvas = document.getElementById('ascii-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  let width = canvas.width = window.innerWidth;
+  let height = canvas.height = window.innerHeight;
+
+  window.addEventListener('resize', () => {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+  });
+
+  const chars = '01ABCDEF{}[];:<>?/~\\|*&^%$#@!'.split('');
+  const fontSize = 16;
+  const columns = Math.floor(width / fontSize) + 1;
+  const drops = [];
+
+  for (let x = 0; x < columns; x++) { drops[x] = 1; }
+
+  const colors = ['#b58cb5', '#a8c3a6', '#958495']; 
+
+  function draw() {
+    setTimeout(() => { requestAnimationFrame(draw); }, 45); 
+
+    ctx.fillStyle = 'rgba(254, 248, 236, 0.15)'; 
+    ctx.fillRect(0, 0, width, height);
+
+    ctx.font = fontSize + 'px "Space Mono", monospace';
+    ctx.textAlign = 'center';
+
+    for (let i = 0; i < drops.length; i++) {
+      const text = chars[Math.floor(Math.random() * chars.length)];
+      ctx.fillStyle = colors[Math.floor(Math.random() * colors.length)];
+      ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+      if (drops[i] * fontSize > height && Math.random() > 0.975) {
+        drops[i] = 0;
+      }
+      drops[i]++;
+    }
+  }
+  
+  draw();
+}
+
+window.addEventListener('DOMContentLoaded', initAsciiMatrix);
 
 
 
