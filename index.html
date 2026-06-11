@@ -616,20 +616,259 @@
       letter-spacing: 3px; text-transform: uppercase;
       color: rgba(181,140,181,0.22); display: block;
     }
+    /* ── FIXED DNA TIMELINE STYLES (Bio-Tech Focus) ── */
+    .dna-container {
+      position: relative;
+      width: 100%;
+      max-width: 860px;
+      /* Increased top margin from 40px to 100px to clear the title */
+      margin: 100px auto 40px; 
+      display: flex;
+      flex-direction: column;
+      gap: 100px; 
+      /* Increased top padding slightly so the first card doesn't hit the top of the helix */
+      padding: 40px 0 100px; 
+    }
 
-    /* Experience timeline styles */
-    .exp-list { display: flex; flex-direction: column; gap: 0; max-width: 740px; width: 100%; }
-    .exp-item { display: flex; gap: 32px; position: relative; padding-bottom: 48px; }
-    .exp-item:last-child { padding-bottom: 0; }
-    .exp-timeline { display: flex; flex-direction: column; align-items: center; gap: 0; flex-shrink: 0; }
-    .exp-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); margin-top: 6px; flex-shrink: 0; }
-    .exp-line { width: 1px; flex: 1; background: var(--accent-mid); margin-top: 6px; }
-    .exp-item:last-child .exp-line { display: none; }
-    .exp-body { padding-bottom: 8px; }
-    .exp-date { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-bottom: 8px; }
-    .exp-role { font-size: 22px; font-weight: 400; color: var(--text); margin-bottom: 4px; line-height: 1.2; }
-    .exp-org { font-size: 16px; font-style: italic; color: var(--accent); margin-bottom: 12px; }
-    .exp-desc { font-size: 16px; font-weight: 300; color: var(--muted); line-height: 1.7; }
+    /* The repeating double helix background */
+    .dna-helix-bg {
+      position: absolute;
+      top: 0; bottom: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      z-index: 0;
+      pointer-events: none;
+      /* Darkened the helix slightly so it doesn't get lost */
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120" fill="none"><path d="M 20 0 C 20 60, 100 60, 100 120" stroke="%23b58cb5" stroke-width="4" stroke-linecap="round"/><path d="M 100 0 C 100 60, 20 60, 20 120" stroke="%23d8cce6" stroke-width="4" stroke-linecap="round" stroke-dasharray="6 6"/></svg>');
+      background-repeat: repeat-y;
+      background-position: center top;
+    }
+
+    .dna-node {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      width: 100%;
+      align-items: center;
+      justify-content: center;
+      /* THIS IS THE FIX: Creates a massive 120px tall invisible hover zone */
+      padding: 60px 0; 
+      margin-top: -40px; /* Keeps the visual spacing normal */
+    }
+
+    /* The horizontal Base Pair connection */
+    .base-pair {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 80px; 
+      height: 16px; /* Made slightly thicker */
+      border-radius: 6px;
+      box-shadow: 0 4px 10px rgba(61,43,61,0.15);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      z-index: 2;
+    }
+
+    /* The Letters A, T, C, G inside the base pair */
+    .base-pair::before, .base-pair::after {
+      position: absolute;
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      color: #ffffff;
+      font-weight: bold;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    .base-pair::before { content: attr(data-left); left: 8px; }
+    .base-pair::after { content: attr(data-right); right: 8px; }
+
+    /* Base Pair Color Combinations */
+    .bp-at { background: linear-gradient(to right, var(--accent) 50%, var(--sage) 50%); }
+    .bp-ta { background: linear-gradient(to right, var(--sage) 50%, var(--accent) 50%); }
+    .bp-cg { background: linear-gradient(to right, var(--peach) 50%, var(--muted) 50%); }
+    .bp-gc { background: linear-gradient(to right, var(--muted) 50%, var(--peach) 50%); }
+
+    /* THE CARDS - Fixed for Readability! */
+    .dna-card {
+      position: absolute;
+      width: 360px;
+      background: #ffffff;
+      border: 1px solid var(--desk);
+      border-radius: 8px;
+      padding: 28px;
+      box-shadow: 0 10px 30px rgba(61,43,61,0.08);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: default;
+      /* FORCES cards to be completely visible by default! */
+      opacity: 1 !important; 
+      pointer-events: auto;
+    }
+
+    /* Hover effect makes the card lift and the border light up */
+    .dna-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 40px rgba(61,43,61,0.12);
+      border-color: var(--accent);
+    }
+
+    /* If you hover the card, the DNA base pair glows too! */
+    .dna-node:hover .base-pair {
+      transform: scale(1.15);
+      box-shadow: 0 0 16px var(--accent-mid);
+    }
+
+    /* Alternating sides for the cards */
+    .dna-node:nth-child(odd) .dna-card { left: calc(50% + 75px); }
+    .dna-node:nth-child(even) .dna-card { right: calc(50% + 75px); }
+
+    /* The little connector line from the card to the DNA */
+    .dna-card::before {
+      content: '';
+      position: absolute;
+      top: 35px;
+      width: 35px;
+      height: 2px;
+      background: var(--desk);
+      transition: background 0.3s;
+    }
+    .dna-node:nth-child(odd) .dna-card::before { left: -35px; }
+    .dna-node:nth-child(even) .dna-card::before { right: -35px; }
+    
+    .dna-card:hover::before { background: var(--accent); }
+
+    /* Typography inside the card - Bumped up weights for contrast */
+    .dna-date {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      display: block;
+      font-weight: 700;
+    }
+    
+    .dna-role { font-size: 24px; font-weight: 600; color: var(--text); margin-bottom: 6px; line-height: 1.2; }
+    .dna-org { font-size: 16px; font-style: italic; color: var(--muted); margin-bottom: 14px; }
+    .dna-desc { font-size: 17px; font-weight: 400; color: var(--text); line-height: 1.6; }
+
+    /* The repeating double helix background */
+    .dna-helix-bg {
+      position: absolute;
+      top: 0; bottom: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      z-index: 0;
+      pointer-events: none;
+      /* Repeating SVG pattern of a twisting helix */
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120" fill="none"><path d="M 20 0 C 20 60, 100 60, 100 120" stroke="%23d8cce6" stroke-width="4" stroke-linecap="round"/><path d="M 100 0 C 100 60, 20 60, 20 120" stroke="%23b58cb5" stroke-width="4" stroke-linecap="round" opacity="0.4" stroke-dasharray="6 6"/></svg>');
+      background-repeat: repeat-y;
+      background-position: center top;
+    }
+
+    .dna-node {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      width: 100%;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* The horizontal Base Pair connection */
+    .base-pair {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 80px; 
+      height: 12px;
+      border-radius: 6px;
+      box-shadow: 0 4px 10px rgba(61,43,61,0.1);
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+
+    /* Make it "glow" on hover */
+    .dna-node:hover .base-pair {
+      transform: scale(1.15);
+      box-shadow: 0 0 16px var(--accent-mid);
+    }
+
+    /* The Letters A, T, C, G inside the base pair */
+    .base-pair::before, .base-pair::after {
+      position: absolute;
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      color: #ffffff;
+      font-weight: bold;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    .base-pair::before { content: attr(data-left); left: 8px; }
+    .base-pair::after { content: attr(data-right); right: 8px; }
+
+    /* Base Pair Color Combinations matching your palette */
+    .bp-at { background: linear-gradient(to right, var(--accent) 50%, var(--sage) 50%); }
+    .bp-ta { background: linear-gradient(to right, var(--sage) 50%, var(--accent) 50%); }
+    .bp-cg { background: linear-gradient(to right, var(--peach) 50%, var(--muted) 50%); }
+    .bp-gc { background: linear-gradient(to right, var(--muted) 50%, var(--peach) 50%); }
+
+    /* The Sequence Annotation Card (Details) */
+    .dna-card {
+      position: absolute;
+      width: 320px;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--desk);
+      border-radius: 6px;
+      padding: 24px;
+      opacity: 0.4;
+      transform: translateY(10px);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      pointer-events: none; /* Allows mouse to easily hit the base pair */
+    }
+
+    .dna-node:hover .dna-card {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+      box-shadow: 0 16px 40px rgba(61,43,61,0.08);
+      border-color: var(--accent);
+    }
+
+    /* Alternating sides for the cards (Left vs Right) */
+    .dna-node:nth-child(odd) .dna-card { left: calc(50% + 60px); }
+    .dna-node:nth-child(even) .dna-card { right: calc(50% + 60px); }
+
+    /* The tiny connection line from the base pair to the card */
+    .dna-card::before {
+      content: '';
+      position: absolute;
+      top: 30px;
+      width: 20px;
+      height: 1px;
+      background: var(--accent);
+    }
+    .dna-node:nth-child(odd) .dna-card::before { left: -20px; }
+    .dna-node:nth-child(even) .dna-card::before { right: -20px; }
+
+    /* Typography inside the card */
+    .dna-date {
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      display: block;
+    }
+    
+    .dna-role { font-size: 20px; font-weight: 400; color: var(--text); margin-bottom: 4px; line-height: 1.2; }
+    .dna-org { font-size: 15px; font-style: italic; color: var(--muted); margin-bottom: 12px; }
+    .dna-desc { font-size: 16px; font-weight: 300; color: var(--text); line-height: 1.6; }
 
     /* CONTACT PAGE SPECIFIC STYLES */
     .micro-bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: 0.8; overflow: hidden; }
@@ -967,7 +1206,24 @@
       50% { transform: rotate(10deg); }
       75% { transform: rotate(-5deg); }
     }
+
+    /* ── FINE-ART FILM GRAIN BACKGROUND ── */
+    #s-experience::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      
+      /* The microscopic SVG noise texture */
+      background-image: url('data:image/svg+xml;utf8,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.85%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');
+      
+      opacity: 0.12; /* Keeps it incredibly subtle */
+      mix-blend-mode: multiply; /* Blends it naturally into your cream background */
+    }
     
+
+
 </style>
 </head>
 <body>
@@ -1582,38 +1838,56 @@
   </div>
 </div>
 
+  <!-- EXPERIENCE-->
+
 <!-- EXPERIENCE -->
-<div class="screen hidden section-screen" id="s-experience">
-  <p class="s-back" onclick="backToLens('s-experience')">← Back to lens</p>
-  <h1 class="s-title">Experience</h1>
-  <div class="s-rule"></div>
-  <div class="exp-list">
-    <div class="exp-item">
-      <div class="exp-timeline"><div class="exp-dot"></div><div class="exp-line"></div></div>
-      <div class="exp-body">
-        <p class="exp-date"><!-- e.g. Sep 2024 – Present --></p>
-        <p class="exp-role"><!-- Role Title --></p>
-        <p class="exp-org"><!-- Organization --></p>
-        <p class="exp-desc"><!-- Description of your responsibilities and achievements. --></p>
+<!-- We restored your standard padding (8vh 12vw) so it matches the other pages perfectly -->
+<div class="screen hidden section-screen" id="s-experience" style="overflow-y: auto; background-color: var(--bg); padding: 8vh 12vw;">
+  
+  <!-- 1. STANDARD HEADER: Left-aligned like the rest of the site -->
+  <div style="position: relative; z-index: 1; width: 100%;">
+    <p class="s-back" onclick="backToLens('s-experience')">← Back to lens</p>
+    <h1 class="s-title">Experience</h1>
+    <div class="s-rule"></div>
+  </div>
+
+  <!-- 2. DNA TIMELINE: Centered on its own so the wide screen doesn't break it -->
+  <div class="dna-container" style="margin: 60px auto 0 auto; max-width: 860px; position: relative;">
+    
+    <!-- The continuous looping DNA background -->
+    <div class="dna-helix-bg"></div>
+
+      <div class="dna-node">
+        <div class="base-pair bp-at" data-left="A" data-right="T"></div>
+        <div class="dna-card">
+          <span class="dna-date">Aprril 2026 – August 2026</span>
+          <p class="dna-role">Undergraduate Research Assistant</p>
+          <p class="dna-org">University of Waterloo</p>
+          <p class="dna-desc">Designing and optimizing DNA aptamer systems and integrating bioinformatics pipelines for molecular recognition
+            with Prof. Juewen Liu.</p>
+        </div>
       </div>
-    </div>
-    <div class="exp-item">
-      <div class="exp-timeline"><div class="exp-dot"></div><div class="exp-line"></div></div>
-      <div class="exp-body">
-        <p class="exp-date"><!-- e.g. Jan 2024 – Apr 2024 --></p>
-        <p class="exp-role"><!-- Role Title --></p>
-        <p class="exp-org"><!-- Organization --></p>
-        <p class="exp-desc"><!-- Description of your responsibilities and achievements. --></p>
+
+      <div class="dna-node">
+        <div class="base-pair bp-cg" data-left="C" data-right="G"></div>
+        <div class="dna-card">
+          <span class="dna-date">October 2025 – March 2026</span>
+          <p class="dna-role">Hardware & Robotics Lead</p>
+          <p class="dna-org">Student Design Team</p>
+          <p class="dna-desc">Engineered physical robotic hand integrations using Arduino, computer vision, and Python scripting for real-time gesture control.</p>
+        </div>
       </div>
-    </div>
-    <div class="exp-item">
-      <div class="exp-timeline"><div class="exp-dot"></div><div class="exp-line"></div></div>
-      <div class="exp-body">
-        <p class="exp-date"><!-- e.g. May 2023 – Aug 2023 --></p>
-        <p class="exp-role"><!-- Role Title --></p>
-        <p class="exp-org"><!-- Organization --></p>
-        <p class="exp-desc"><!-- Description of your responsibilities and achievements. --></p>
+
+      <div class="dna-node">
+        <div class="base-pair bp-gc" data-left="A" data-right="T"></div>
+        <div class="dna-card">
+          <span class="dna-date">May 2023 – Aug 2023</span>
+          <p class="dna-role">Bioinformatics Intern</p>
+          <p class="dna-org">Tech Bio Lab</p>
+          <p class="dna-desc">Developed machine learning algorithms to process drug delivery data using the ChEMBL database API.</p>
+        </div>
       </div>
+
     </div>
   </div>
 </div>
