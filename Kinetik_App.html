@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kinetik App</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    
+    :root {
+      --bg: #fcfbfe;         
+      --accent: #b58cb5;     
+      --accent-dim: rgba(181, 140, 181, 0.1);
+      --text: #453445;       
+      --muted: #958495;      
+      --peach: #ffbba6;      
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Cormorant Garamond', serif;
+      margin: 0;
+      padding: 6vh 4vw;
+      display: flex;
+      justify-content: center;
+      li {
+        font-size: 18px;
+        line-height: 1.8;      /* Gives breathing room between wrapped text lines */
+        margin-bottom: 12px;   /* Adds space between individual bullet points */
+      }
+    }
+
+    /* ── The "Document" Container ── */
+    .project-container {
+      background: #ffffff;
+      max-width: 900px;
+      width: 100%;
+      padding: 60px 80px;
+      border-radius: 8px;
+      box-shadow: 0 20px 60px rgba(61, 43, 61, 0.05);
+      border: 1px solid rgba(181, 140, 181, 0.1);
+    }
+
+    .back-btn {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: var(--muted);
+      text-transform: uppercase;
+      text-decoration: none;
+      display: inline-block;
+      margin-bottom: 40px;
+      transition: color 0.2s;
+    }
+
+    .back-btn:hover { color: var(--accent); }
+
+    h1 {
+      font-size: clamp(40px, 5vw, 56px);
+      font-weight: 300;
+      font-style: italic;
+      margin: 0 0 16px 0;
+      line-height: 1.1;
+    }
+
+    .rule {
+      width: 64px;
+      height: 2px;
+      background: var(--accent);
+      margin-bottom: 30px;
+    }
+
+    /* ── Tech Stack Tags ── */
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 40px;
+    }
+
+    .tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-dim);
+      padding: 6px 12px;
+      border-radius: 4px;
+    }
+
+    /* ── The TL;DR / Abstract Box ── */
+    .abstract-box {
+      background: #fef8ec;
+      border-left: 2px solid var(--peach);
+      padding: 24px 32px;
+      margin-bottom: 40px;
+      border-radius: 0 4px 4px 0;
+    }
+
+    .abstract-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--peach);
+      margin: 0 0 12px 0;
+      font-weight: 700;
+    }
+
+    p {
+      font-size: 20px;
+      font-weight: 300;
+      line-height: 1.8;
+      color: var(--text);
+      margin: 0 0 24px 0;
+    }
+
+    h2 {
+      font-size: 32px;
+      font-weight: 400;
+      margin: 40px 0 16px 0;
+    }
+
+    .figure-caption {
+      margin-top: 12px;
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-align: center;
+    }
+    
+    .figure-caption strong {
+      color: var(--accent);
+    }
+
+    /* ── DYNAMIC MOBILE SCREENSHOT GALLERY ── */
+    .screenshot-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 24px;
+      margin: 48px 0;
+      width: 100%;
+    }
+
+    /* Elegant simulated device container mimicking a real phone bezel */
+    .phone-mockup {
+      background: #090211; 
+      padding: 10px;
+      border-radius: 32px;
+      box-shadow: 
+        0 4px 6px rgba(61, 43, 61, 0.05),
+        0 20px 40px rgba(61, 43, 61, 0.15);
+      border: 1px solid rgba(181, 140, 181, 0.2);
+      transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .phone-mockup:hover {
+      transform: translateY(-6px);
+    }
+
+    .phone-screen {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 9 / 19.5; 
+      object-fit: cover;
+      border-radius: 24px;
+      background: #f0f4f8;
+      display: block;
+    }
+
+    /* Responsive scaling adjustments for smaller displays */
+    @media (max-width: 768px) {
+      .project-container {
+        padding: 40px 24px;
+      }
+      .screenshot-gallery {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="project-container">
+    <a href="index.html#projects" class="back-btn">← Back to Projects</a>
+
+    <h1>Kinetik - Your very own supplement Tracker!</h1>
+    <div class="rule"></div>
+
+    <div class="tag-row">
+      <span class="tag">Flutter</span>
+      <span class="tag">Dart</span>
+      <span class="tag">Firebase Firestore</span>
+      <span class="tag">Cloud Functions</span>
+      <span class="tag">Git</span>
+      <span class="tag">Python</span>
+      <span class="tag">Pharmacokinetics</span>
+      <span class="tag">Javascript</span>
+      <span class="tag">Mobile UI/UX Design</span>
+      <span class="tag">Data Modelling</span>
+    </div>
+
+    <div class="abstract-box">
+      <p class="abstract-title">Abstract</p>
+      <p style="margin:0; font-style: italic; font-size: 18px;">
+        I noticed that standard health and habit trackers are completely static, and they simply tell you what you consumed, 
+        but not how it actually behaves in your body. To solve this, I built Kinetik, a Flutter and Firebase app that tracks real-time supplement concentration instead of just doses.
+        The biggest technical hurdle was taking abstract pharmacokinetic formulas and translating them into a dynamic, real-time visual graph on a mobile device while keeping the database reads and writes highly optimized.
+        It really challenged me to bridge complex data modeling with clean mobile development, and the end product was an app that took in your
+        age, weight, metabolism and graphed out curved that helped you visualised when the supplements was best being absorbed and utilised in your body.
+        Furthermore, the app told users when to cap their consumption, and even gave them a focus tab to maximise their work based on what career path they were in!
+      </p>
+    </div>
+
+    <h2>Methodology</h2>
+    <p>
+      <li>Engineered a real-time pharmacokinetic (PK) tracking application using Flutter and Dart to compute and visualize metabolic decay and blood concentration curves for user-inputted supplements.</li>
+      <li>Architected a scalable NoSQL database schema in Firebase Firestore to manage user profiles, multi-substance intake logs, and granular, real-time concentration data points.</li>
+      <li>Implemented localized mathematical modeling equations to simulate half-life, absorption rates, and receptor clearance, transforming static time-stamps into dynamic line charts.</li>
+      <li>Designed clean, responsive user interfaces focused on data visualization, ensuring seamless rendering of complex, multi-variable metabolic graphs across iOS and Android devices.</li>
+    </p>
+
+    <div class="screenshot-gallery">
+      
+      <div class="phone-mockup">
+        <img src="Screenshot 2026-06-30 191718.png" alt="Kinetik Empty Dashboard State" class="phone-screen" />
+        <p class="figure-caption" style="margin-bottom:0;"><strong>01:</strong> Intake Log Base</p>
+      </div>
+
+      <div class="phone-mockup">
+        <img src="Screenshot 2026-06-30 191726.png" alt="Kinetik Live Metabolic Concentration Line Graph" class="phone-screen" />
+        <p class="figure-caption" style="margin-bottom:0;"><strong>02:</strong> Live PK Curves</p>
+      </div>
+
+      <div class="phone-mockup">
+        <img src="Screenshot 2026-06-30 191729.png" alt="Kinetik Focus Lab Pomodoro Interface" class="phone-screen" />
+        <p class="figure-caption" style="margin-bottom:0;"><strong>03:</strong> Focus Bio-Timer</p>
+      </div>
+
+      <div class="phone-mockup">
+        <img src="Screenshot 2026-06-30 191733.png" alt="Kinetik Gamified Lab Gear Store Dashboard" class="phone-screen" />
+        <p class="figure-caption" style="margin-bottom:0;"><strong>04:</strong> The Lab Shop</p>
+      </div>
+
+      <div class="phone-mockup">
+        <img src="Screenshot 2026-06-30 191740.png" alt="Kinetik AI Metabolic Assistant chat workspace" class="phone-screen" />
+        <p class="figure-caption" style="margin-bottom:0;"><strong>05:</strong> Kinetik AI Coach</p>
+      </div>
+
+      <div class="phone-mockup">
+        <img src="Screenshot 2026-06-30 191755.png" alt="Kinetik Contribution Style Bio-Log Heatmap" class="phone-screen" />
+        <p class="figure-caption" style="margin-bottom:0;"><strong>06:</strong> Metabolic Trends</p>
+      </div>
+
+    </div>
+  </div>
+
+</body>
+</html>
