@@ -1753,7 +1753,7 @@
   </div>
 
   <div style="position: relative; z-index: 1; width: 100%;">
-    <p class="s-back" onclick="backToLens('s-about')">← Back to lens</p>
+    <p class="s-back" onclick="backToLens()">← Back to lens</p>
     <h1 class="s-title">About<br/>Me</h1>
     <div class="s-rule"></div>
     <p class="about-bio">I am a <em>nanotechnology engineering</em> student at the University of Waterloo building 
@@ -1902,7 +1902,7 @@
 
   <div style="position: relative; z-index: 1; width: 100%; display: flex; flex-direction: column; align-items: flex-start;">
     
-    <p class="s-back" onclick="backToLens('s-projects')">← Back to lens</p>
+    <p class="s-back" onclick="backToLens()">← Back to lens</p>
     <h1 class="s-title">Projects</h1>
     <div class="s-rule"></div>
 
@@ -1959,7 +1959,7 @@
 <!-- SKILLS — notebook layout -->
 <div class="screen hidden" id="s-skills">
   <div class="nb-topbar">
-    <p class="s-back" onclick="backToLens('s-skills')">← Back to lens</p>
+    <p class="s-back" onclick="backToLens()">← Back to lens</p>
   </div>
   <div class="notebook">
 
@@ -2039,7 +2039,7 @@
   
   <!-- 1. STANDARD HEADER: Left-aligned like the rest of the site -->
   <div style="position: relative; z-index: 1; width: 100%;">
-    <p class="s-back" onclick="backToLens('s-experience')">← Back to lens</p>
+    <p class="s-back" onclick="backToLens()">← Back to lens</p>
     <h1 class="s-title">Experience</h1>
     <div class="s-rule"></div>
   </div>
@@ -2130,7 +2130,7 @@
   </div>
 
   <div class="contact-content">
-    <p class="s-back" onclick="backToLens('s-contact')">← Back to lens</p>
+    <p class="s-back" onclick="backToLens()">← Back to lens</p>
     <h1 class="s-title">Contact</h1>
     <div class="s-rule"></div>
     <div class="contact-panel">
@@ -2238,6 +2238,9 @@ function enterLens() {
   tunnel.style.webkitClipPath = `circle(220vmax at ${ex}px ${ey}px)`;
 
   setTimeout(() => {
+    // THIS IS THE FIX: Set the hash to #lens so it saves into the browser history stack!
+    window.location.hash = "lens"; 
+    
     showOnly('s-lens');
     tunnel.style.transition = 'opacity 0.4s ease-out';
     tunnel.style.opacity = '0';
@@ -2257,6 +2260,7 @@ function go(section) {
     overlay.classList.remove('on');
     if (section === 'skills') initInkCanvas();
   }, 300);
+  window.location.hash = section;
 }
 
 // ── Disappearing ink canvas ──
@@ -2352,6 +2356,7 @@ function backToLens(currentSectionId) {
     showOnly('s-lens');
     overlay.classList.remove('on');
   }, 300);
+  window.location.hash = "lens";
 }
 
 function backToDesk() {
@@ -2360,6 +2365,7 @@ function backToDesk() {
     showOnly('s-landing');
     overlay.classList.remove('on');
   }, 300);
+  window.location.hash = "";
 }
 
 function openPDF() {
@@ -2387,21 +2393,15 @@ function filterProjects(category, event) {
   });
 }
 
-// ── Return Directly to Projects Page ──
+// ── Initial Page Load Router ──
 window.addEventListener('DOMContentLoaded', () => {
-  if (window.location.hash === '#projects') {
-    // Hide the landing desk and immediately show the projects screen
-    document.getElementById('s-landing').classList.add('hidden');
-    document.getElementById('s-projects').classList.remove('hidden');
-  }
-});
-
-// ── Return Directly to Projects Page ──
-window.addEventListener('DOMContentLoaded', () => {
-  if (window.location.hash === '#projects') {
-    // Hide the landing desk and immediately show the projects screen
-    document.getElementById('s-landing').classList.add('hidden');
-    document.getElementById('s-projects').classList.remove('hidden');
+  // Check if there's a hash in the URL (like #projects, #about, etc.)
+  if (window.location.hash) {
+    // Run it through our main routing function so it opens smoothly with the overlay!
+    handleRouting();
+  } else {
+    // Default fallback: show the microscope desk landing view if no hash is present
+    showOnly('s-landing');
   }
 });
 
@@ -2454,6 +2454,39 @@ function initAsciiMatrix() {
 
 window.addEventListener('DOMContentLoaded', initAsciiMatrix);
 
+// ── THE CENTRALISED ROUTER ──
+// This function monitors the browser URL changes (including browser back buttons!)
+function handleRouting() {
+  const hash = window.location.hash.replace('#', '');
+  overlay.classList.add('on');
+
+  setTimeout(() => {
+    if (!hash) {
+      showOnly('s-landing');
+    } else if (hash === 'lens') {
+      showOnly('s-lens');
+    } else {
+      const targetScreen = document.getElementById('s-' + hash);
+      if (targetScreen) {
+        showOnly('s-' + hash);
+        if (hash === 'skills') initInkCanvas();
+      } else {
+        showOnly('s-landing');
+      }
+    }
+    overlay.classList.remove('on');
+  }, 300);
+}
+
+// Listen for browser back/forward buttons
+window.addEventListener('hashchange', handleRouting);
+
+// Trigger on initial page load so direct links or refreshes work perfectly
+window.addEventListener('DOMContentLoaded', () => {
+  if (window.location.hash) {
+    handleRouting();
+  }
+});
 
 
 </script>
