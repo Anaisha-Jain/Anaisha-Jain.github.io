@@ -181,6 +181,143 @@
       background: var(--text); /* Using your original text color as the tag background */
       border: none;
     }
+
+    /* ── ABOUT ME · POLAROID WALL ── */
+    .polaroid-wall {
+      position: absolute;
+      top: 6vh;
+      right: 4vw;
+      width: clamp(280px, 29vw, 400px);
+      height: 78vh;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .polaroid-wall svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .polaroid {
+      position: absolute;
+      width: 140px;
+      background: #fdfbf7; /* Slight warm gallery-white paper tone */
+      padding: 12px 12px 24px 12px; /* Deeper bottom padding for captions */
+      border-radius: 1px;
+      /* Soft multi-layered realistic shadow */
+      box-shadow: 
+        0 2px 4px rgba(61, 43, 65, 0.04),
+        0 12px 28px rgba(61, 43, 65, 0.12);
+      transform: rotate(var(--r, 0deg));
+      transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease;
+      pointer-events: auto;
+    }
+
+    .polaroid:hover {
+      transform: rotate(0deg) translateY(-8px) scale(1.08);
+      box-shadow: 
+        0 4px 8px rgba(61, 43, 65, 0.06),
+        0 20px 40px rgba(61, 43, 65, 0.18);
+      z-index: 5;
+    }
+
+    /* Turned purple tape into a realistic wooden clothespin peg */
+    .polaroid-tape {
+      position: absolute;
+      top: -14px; /* Sits perfectly over the line */
+      left: 50%;
+      width: 10px;
+      height: 26px;
+      background: #dfcfb7; /* Wooden peg tone */
+      border-radius: 1px;
+      box-shadow: 
+        1px 2px 4px rgba(0,0,0,0.1),
+        inset -1px -1px 2px rgba(0,0,0,0.15),
+        inset 1px 1px 1px rgba(255,255,255,0.4);
+      transform: translateX(-50%);
+      z-index: 10;
+    }
+    
+    /* Small dark line detail for the clothespin spring mechanism */
+    .polaroid-tape::after {
+      content: '';
+      position: absolute;
+      top: 12px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: #a1927d;
+    }
+
+    .polaroid-photo {
+      position: relative;
+      width: 100%;
+      height: 116px; /* Vintage squarer photo proportions */
+      overflow: hidden;
+      background: linear-gradient(135deg, var(--accent-dim), var(--desk));
+      border: 1px solid rgba(61, 43, 65, 0.04); /* Inset image border */
+    }
+
+    .polaroid-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .polaroid-photo.no-photo::before {
+      content: '+';
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 38px;
+      font-weight: 300;
+      color: var(--accent);
+    }
+
+    .polaroid-photo.no-photo::after {
+      content: 'add a photo';
+      position: absolute;
+      bottom: 6px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-family: 'Space Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .polaroid-cap {
+      margin-top: 10px;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 14px;
+      color: var(--text);
+      text-align: center;
+    }
+
+    @media (max-width: 1150px) {
+      .polaroid-wall {
+        position: static;
+        width: 100%;
+        max-width: 680px;
+        height: auto;
+        margin: 8px 0 56px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 28px 20px;
+      }
+      .polaroid-wall svg { display: none; }
+      .polaroid { position: static !important; }
+    }
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     
     :root {
@@ -1627,8 +1764,64 @@
     I'm usually building projects, hanging out with my friends at the library, or falling down a deep Wikipedia rabbit hole about Dinosaurs!</p>
   </div>
 
+  <!-- POLAROID WALL — Spaced into clean rows mimicking image_8ff9db.jpg -->
+  <div class="polaroid-wall">
+    <svg viewBox="0 0 380 700" preserveAspectRatio="none">
+      <line x1="0" y1="120" x2="380" y2="120" stroke="rgba(69,52,69,0.2)" stroke-width="1.2" stroke-dasharray="3 3" />
+      <line x1="0" y1="345" x2="380" y2="345" stroke="rgba(69,52,69,0.2)" stroke-width="1.2" stroke-dasharray="3 3" />
+      <line x1="0" y1="570" x2="380" y2="570" stroke="rgba(69,52,69,0.2)" stroke-width="1.2" stroke-dasharray="3 3" />
+    </svg>
+
+    <div class="polaroid" style="top: 3%; left: 6%; --r: -1deg;">
+      <div class="polaroid-tape"></div>
+      <div class="polaroid-photo">
+        <img src="FTC_comp.jpg" alt="" onerror="this.style.display='none'; this.parentElement.classList.add('no-photo');">
+      </div>
+      <p class="polaroid-cap">FTC Robo!</p>
+    </div>
+
+    <div class="polaroid" style="top: 3%; right: 6%; --r: 1.5deg;">
+      <div class="polaroid-tape"></div>
+      <div class="polaroid-photo">
+        <img src="Fall.jpg" alt="" onerror="this.style.display='none'; this.parentElement.classList.add('no-photo');">
+      </div>
+      <p class="polaroid-cap">Fall Season in Downtown Toronto!</p>
+    </div>
+
+    <div class="polaroid" style="top: 35%; left: 6%; --r: 0.8deg;">
+      <div class="polaroid-tape"></div>
+      <div class="polaroid-photo">
+        <img src="F1_sim.jpg" alt="" onerror="this.style.display='none'; this.parentElement.classList.add('no-photo');">
+      </div>
+      <p class="polaroid-cap">F1 sim at supercar show</p>
+    </div>
+
+    <div class="polaroid" style="top: 35%; right: 6%; --r: -1.2deg;">
+      <div class="polaroid-tape"></div>
+      <div class="polaroid-photo">
+        <img src="CN_tower.jpg" alt="" onerror="this.style.display='none'; this.parentElement.classList.add('no-photo');">
+      </div>
+      <p class="polaroid-cap">CN Tower</p>
+    </div>
+
+    <div class="polaroid" style="top: 67%; left: 6%; --r: -1.5deg;">
+      <div class="polaroid-tape"></div>
+      <div class="polaroid-photo">
+        <img src="Stegasaurus.jpg" alt="" onerror="this.style.display='none'; this.parentElement.classList.add('no-photo');">
+      </div>
+      <p class="polaroid-cap">Stegosaurus fossil!</p>
+    </div>
+
+    <div class="polaroid" style="top: 67%; right: 6%; --r: 1deg;">
+      <div class="polaroid-tape"></div>
+      <div class="polaroid-photo">
+        <img src="Dog_Car.jpg" alt="" onerror="this.style.display='none'; this.parentElement.classList.add('no-photo');">
+      </div>
+      <p class="polaroid-cap">Furry in a Ferrari ;p</p>
+    </div>
+  </div>
+  
   <!-- INTERACTIVE "CURRENTLY" SHELF -->
-   <!-- INTERACTIVE "CURRENTLY" SHELF -->
     <div class="about-shelf-wrap">
       <p class="shelf-title">Currently...</p>
       <div class="about-shelf">
