@@ -4,17 +4,18 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>DNA Biosensors</title>
+  <meta name="description" content="Co-op research on DNA aptamer biosensors for detecting agricultural contaminants: binding assays in the lab and a co-authored review paper."/>
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; }
-    
+
     :root {
-      --bg: #fcfbfe;         
-      --accent: #b58cb5;     
+      --bg: #fcfbfe;
+      --accent: #b58cb5;
       --accent-dim: rgba(181, 140, 181, 0.1);
-      --text: #453445;       
-      --muted: #958495;      
-      --peach: #ffbba6;      
+      --text: #453445;
+      --muted: #958495;
+      --peach: #ffbba6;
     }
 
     body {
@@ -25,11 +26,6 @@
       padding: 6vh 4vw;
       display: flex;
       justify-content: center;
-       li {
-        font-size: 15px;
-        line-height: 1.8;      /* Gives breathing room between wrapped text lines */
-        margin-bottom: 12px;   /* Adds space between individual bullet points */
-      }
     }
 
     /* ── The "Document" Container ── */
@@ -54,11 +50,10 @@
       margin-bottom: 40px;
       transition: color 0.2s;
     }
-
-    .back-btn:hover { color: var(--accent); }
+    .back-btn:hover, .back-btn:focus-visible { color: var(--accent); }
 
     h1 {
-      font-size: clamp(40px, 5vw, 56px);
+      font-size: clamp(36px, 5vw, 56px);
       font-weight: 300;
       font-style: italic;
       margin: 0 0 16px 0;
@@ -79,7 +74,6 @@
       gap: 10px;
       margin-bottom: 40px;
     }
-
     .tag {
       font-family: 'Space Mono', monospace;
       font-size: 9px;
@@ -91,7 +85,7 @@
       border-radius: 4px;
     }
 
-    /* ── The TL;DR / Abstract Box ── */
+    /* ── Overview box ── */
     .abstract-box {
       background: #fef8ec;
       border-left: 2px solid var(--peach);
@@ -99,7 +93,6 @@
       margin-bottom: 40px;
       border-radius: 0 4px 4px 0;
     }
-
     .abstract-title {
       font-family: 'Space Mono', monospace;
       font-size: 10px;
@@ -109,6 +102,7 @@
       margin: 0 0 12px 0;
       font-weight: 700;
     }
+    .abstract-box p:last-child { margin-bottom: 0; }
 
     p {
       font-size: 20px;
@@ -117,52 +111,49 @@
       color: var(--text);
       margin: 0 0 24px 0;
     }
+    p strong { font-weight: 600; }
 
     h2 {
       font-size: 32px;
       font-weight: 400;
-      margin: 40px 0 16px 0;
+      margin: 48px 0 16px 0;
     }
 
-    /* ── Project Figures & Images ── */
+    /* ── Figures ── */
     .figure-wrapper {
       margin: 32px 0;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
-
     .project-img {
       width: 100%;
       max-height: 500px;
-      object-fit: cover; /* Keeps the image from stretching */
+      object-fit: cover;
       border-radius: 6px;
       box-shadow: 0 8px 24px rgba(61, 43, 61, 0.1);
       border: 1px solid rgba(181, 140, 181, 0.2);
     }
-
     .figure-caption {
-      margin-top: 12px;
+      margin: 12px 0 0 0;
       font-family: 'Space Mono', monospace;
       font-size: 10px;
       color: var(--muted);
       letter-spacing: 1px;
       text-transform: uppercase;
       text-align: center;
+      line-height: 1.6;
     }
-    
-    .figure-caption strong {
-      color: var(--accent);
-    }
+    .figure-caption strong { color: var(--accent); }
 
-    /* ── Clean Data Tables ── */
+    /* ── Tables ── */
+    .table-scroll { overflow-x: auto; }
     .data-table {
       width: 100%;
       border-collapse: collapse;
-      margin: 30px 0;
+      margin: 24px 0 32px 0;
       font-size: 18px;
     }
-
     .data-table th {
       font-family: 'Space Mono', monospace;
       font-size: 10px;
@@ -173,18 +164,28 @@
       padding: 16px 12px;
       border-bottom: 1px solid var(--accent);
     }
-
     .data-table td {
       padding: 16px 12px;
       border-bottom: 1px solid rgba(181, 140, 181, 0.2);
       font-weight: 300;
+      line-height: 1.6;
+      vertical-align: top;
     }
+    .data-table td:first-child { font-weight: 600; white-space: nowrap; }
 
+    @media (max-width: 700px) {
+      body { padding: 3vh 3vw; }
+      .project-container { padding: 36px 22px; }
+      p { font-size: 18px; }
+      h2 { font-size: 28px; }
+      .abstract-box { padding: 20px; }
+      .data-table td:first-child { white-space: normal; }
+    }
   </style>
 </head>
 <body>
 
-  <div class="project-container">
+  <main class="project-container">
     <a href="index.html#projects" class="back-btn">← Back to Projects</a>
 
     <h1>DNA Biosensors (Co-op for Summer 2026)</h1>
@@ -198,28 +199,81 @@
       <span class="tag">Drug Delivery</span>
     </div>
 
+    <!-- OVERVIEW -->
     <div class="abstract-box">
-      <p class="abstract-title">Abstract</p>
-      <p style="margin:0; font-style: italic; font-size: 18px;">
+      <p class="abstract-title">Overview</p>
+      <p>
         In a lab at Uwaterloo with Prof. Juewen Liu where I am working with biosensors based on DNA aptamers based on binding assays, 
-        fluorescence plate readers, and other spectrometers.Co-authoring a comprehensive academic reviewpaper detailing the development of highly specific DNA aptamers
-     for the rapid detection of agricultural contaminants, including herbicides, pesticides, and insecticides.
+        fluorescence plate readers, and other spectrometers.
+        Co-authoring a comprehensive academic reviewpaper detailing the development of highly specific DNA aptamers 
+        for the rapid detection of agricultural contaminants, including herbicides, pesticides, and insecticides.
       </p>
     </div>
 
-    <h2>Methodology</h2>
-    <p>I am synthesizing extensive biochemical literature to evaluate complex aptamer binding affinities (Kd) and biosensor
-       integration strategies for environmental monitoring by using SELEX, DNA aptamer targets like hydoquinone, resorcinol, phenol.
-       Furthermore, I am also conducting rigorous literature reviews, managing large bibliographic databases, and ensuring strict adherence to
-       academic formatting and citation standards for journal submission.
+    <!-- THE PROBLEM -->
+    <h2>The problem</h2>
+    <p>
+      Herbicides, pesticides and insecticides can end up in soil and water, and checking for them usually means
+      sending samples away for slow, equipment-heavy analysis. A sensor that detects them quickly and specifically
+      would make environmental monitoring much easier.
+    </p>
+    <p>
+      DNA aptamers are short strands of DNA, found through a process called SELEX, that bind one specific target molecule.
+      Built into a biosensor, they can turn that binding into a readable signal. The key number is the dissociation
+      constant (Kd), which describes how tightly an aptamer holds its target: the lower the Kd, the tighter the binding.
+    </p>
+
+    <!-- WHAT I DID -->
+    <h2>What I did</h2>
+    <p>
+      <strong>Lab work:</strong> I am synthesizing extensive biochemical literature to evaluate complex aptamer binding affinities (Kd)
+       and biosensor integration strategies for environmental monitoring by using SELEX, DNA aptamer targets like 
+       hydoquinone, resorcinol, phenol. Furthermore, I am also conducting rigorous literature reviews, managing large bibliographic databases, 
+       and ensuring strict adherence to academic formatting and citation standards for journal submission.
 
     </p>
-    
+    <p>
+      <strong>Review paper:</strong> I co-authored a comprehensive review on how highly specific DNA aptamers have been
+      developed for the rapid detection of herbicides, pesticides and insecticides. I synthesize the biochemical
+      literature to compare aptamer binding affinities (Kd) and the ways aptamers are integrated into biosensors for
+      environmental monitoring, including SELEX-derived aptamers for targets such as hydroquinone, resorcinol and phenol.
+    </p>
+    <p>
+      <strong>Paper management:</strong> I run the literature searches, manage a large bibliographic database,
+      and make sure the manuscript follows the academic formatting and citation standards required for journal submission.
+    </p>
+    <!-- ADD (optional): which assays / aptamers you personally ran, and any result or skill you're proud of. -->
+
     <div class="figure-wrapper">
-      <img src="bench-setup.jpg" alt="Lab bench setup with Varian Cary Eclipse Fluorescence Spectrophotometer" class="project-img" />
-      <p class="figure-caption"><strong>Figure 1:</strong> Experimental setup for characterizing aptamer binding kinetics and fluorescence assays at the bench.</p>
+      <img src="bench-setup.jpg" alt="Lab bench with a Varian Cary Eclipse fluorescence spectrophotometer" class="project-img" />
+      <p class="figure-caption"><strong>Figure 1:</strong> Bench setup for characterizing aptamer binding and running fluorescence assays.</p>
     </div>
-  </div>
+
+    <!-- TECHNIQUES -->
+    <h2>Techniques and tools</h2>
+    <div class="table-scroll">
+      <table class="data-table">
+        <thead>
+          <tr><th>Technique</th><th>What it's for</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>SELEX</td><td>Selecting DNA aptamers that bind a chosen target</td></tr>
+          <tr><td>Binding assays</td><td>Measuring how strongly an aptamer binds its target (Kd)</td></tr>
+          <tr><td>Fluorescence plate readers and spectrometers</td><td>Reading the signal that shows binding, including on the Varian Cary Eclipse fluorescence spectrophotometer</td></tr>
+          <tr><td>Literature review</td><td>Comparing published aptamers and biosensor designs for the review paper</td></tr>
+          <tr><td>Wet Lab Work</td><td>Conducted experiments in the lab for data. </td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- OUTCOME -->
+    <h2>Outcome</h2>
+    <p>
+      The review paper is being published in ACS Nano Medicine, titled: "Enzyme versus Nanozyme Therapeutics: Opportunities and Challenges"
+    </p>
+    <!-- ADD when true: submission or publication status + journal name, a link to the paper, how many papers the review covers,
+         and any result from your lab assays. -->
+  </main>
 
 </body>
 </html>
