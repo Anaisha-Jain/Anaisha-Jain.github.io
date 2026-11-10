@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>StyLily: Your own personal AI closet assistant!</title>
+  <meta name="description" content="StyLily, an AI closet assistant that finds clothes catered to your needs! This project came alive at SheHacks+ hosted at Western University, where it got an honourable mention for the use of Gemini!"/>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+
+    :root {
+      --bg: #fcfbfe;
+      --accent: #b58cb5;
+      --accent-dim: rgba(181, 140, 181, 0.1);
+      --text: #453445;
+      --muted: #958495;
+      --peach: #ffbba6;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Cormorant Garamond', serif;
+      margin: 0;
+      padding: 6vh 4vw;
+      display: flex;
+      justify-content: center;
+    }
+
+    /* ── The "Document" Container ── */
+    .project-container {
+      background: #ffffff;
+      max-width: 900px;
+      width: 100%;
+      padding: 60px 80px;
+      border-radius: 8px;
+      box-shadow: 0 20px 60px rgba(61, 43, 61, 0.05);
+      border: 1px solid rgba(181, 140, 181, 0.1);
+    }
+
+    .back-btn {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: var(--muted);
+      text-transform: uppercase;
+      text-decoration: none;
+      display: inline-block;
+      margin-bottom: 40px;
+      transition: color 0.2s;
+    }
+    .back-btn:hover, .back-btn:focus-visible { color: var(--accent); }
+
+    h1 {
+      font-size: clamp(36px, 5vw, 56px);
+      font-weight: 300;
+      font-style: italic;
+      margin: 0 0 16px 0;
+      line-height: 1.1;
+    }
+
+    .rule {
+      width: 64px;
+      height: 2px;
+      background: var(--accent);
+      margin-bottom: 30px;
+    }
+
+    /* ── Tech Stack Tags ── */
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 40px;
+    }
+    .tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-dim);
+      padding: 6px 12px;
+      border-radius: 4px;
+    }
+
+    /* ── Overview box ── */
+    .abstract-box {
+      background: #fef8ec;
+      border-left: 2px solid var(--peach);
+      padding: 24px 32px;
+      margin-bottom: 40px;
+      border-radius: 0 4px 4px 0;
+    }
+    .abstract-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--peach);
+      margin: 0 0 12px 0;
+      font-weight: 700;
+    }
+    .abstract-box p:last-child { margin-bottom: 0; }
+
+    p {
+      font-size: 20px;
+      font-weight: 300;
+      line-height: 1.8;
+      color: var(--text);
+      margin: 0 0 24px 0;
+    }
+    p strong { font-weight: 600; }
+
+    h2 {
+      font-size: 32px;
+      font-weight: 400;
+      margin: 48px 0 16px 0;
+    }
+    h3 {
+      font-size: 24px;
+      font-weight: 600;
+      margin: 32px 0 10px 0;
+    }
+
+    /* ── Figures ── */
+    .figure-wrapper {
+      margin: 32px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .project-img {
+      width: 100%;
+      max-height: 500px;
+      object-fit: cover;
+      border-radius: 6px;
+      box-shadow: 0 8px 24px rgba(61, 43, 61, 0.1);
+      border: 1px solid rgba(181, 140, 181, 0.2);
+    }
+    .figure-caption {
+      margin: 12px 0 0 0;
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-align: center;
+      line-height: 1.6;
+    }
+    .figure-caption strong { color: var(--accent); }
+
+    /* ── Tables ── */
+    .table-scroll { overflow-x: auto; }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 24px 0 32px 0;
+      font-size: 18px;
+    }
+    .data-table th {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: left;
+      padding: 16px 12px;
+      border-bottom: 1px solid var(--accent);
+    }
+    .data-table td {
+      padding: 16px 12px;
+      border-bottom: 1px solid rgba(181, 140, 181, 0.2);
+      font-weight: 300;
+      line-height: 1.6;
+      vertical-align: top;
+    }
+    .data-table td:first-child { font-weight: 600; white-space: nowrap; }
+
+    @media (max-width: 700px) {
+      body { padding: 3vh 3vw; }
+      .project-container { padding: 36px 22px; }
+      p { font-size: 18px; }
+      h2 { font-size: 28px; }
+      h3 { font-size: 22px; }
+      .abstract-box { padding: 20px; }
+      .data-table td:first-child { white-space: normal; }
+    }
+  </style>
+</head>
+<body>
+<main class="project-container">
+    <a href="index.html#projects" class="back-btn">← Back to Projects</a>
+
+    <h1>StyLily: Your Personal AI Closet Assistant</h1>
+    <div class="rule"></div>
+
+    <div class="tag-row">
+      <span class="tag">Python</span>
+      <span class="tag">Streamlit</span>
+      <span class="tag">PyTorch</span>
+      <span class="tag">Computer Vision</span>
+      <span class="tag">OpenAI API</span>
+      <span class="tag">OpenRouter</span>
+      <span class="tag">PIL</span>
+      <span class="tag">Prompt Engineering</span>
+    </div>
+
+    <div class="abstract-box">
+      <p class="abstract-title">Overview</p>
+      <p>
+        StyLily is an AI-powered personal styling application that turns fashion inspiration into
+        personalized outfit ideas. Users can upload an image to identify its fashion aesthetic and
+        extract its dominant colours, then combine those visual cues with their budget, event, and
+        weather preferences to generate a complete outfit and relevant shopping suggestions.
+        The application also includes an interactive AI stylist chatbot for conversational fashion advice. 
+        This application got an honourable mention under the use of Google Gemini category!
+      </p>
+    </div>
+
+    <h2>The problem</h2>
+    <p>
+      Finding an outfit is not always as simple as finding a piece of clothing that looks good.
+      People often start with an inspiration image, but translating that image into a coordinated,
+      wearable outfit can mean searching across multiple stores, identifying the aesthetic,
+      matching colours, and checking whether the clothing is appropriate for an event or the weather.
+    </p>
+    <p>
+      StyLily explores how AI can bring these steps together in one place: helping users move from
+      visual inspiration to outfit ideas that account for both personal style and practical constraints.
+    </p>
+
+    <h2>What I built</h2>
+    <p>
+      I built StyLily as a multi-panel Streamlit application with three connected experiences:
+      image-based style discovery, personalized outfit generation, and an AI stylist chatbot.
+    </p>
+
+    <h3>1. Upload a fashion inspiration image</h3>
+    <p>
+      Users can upload a PNG or JPEG image. The application displays the image and uses PIL and
+      PyTorch to process its pixels. I implemented a dominant-colour extraction function that
+      resizes the image, converts its pixels into tensors, and applies an iterative clustering
+      approach to identify three representative colours.
+    </p>
+    <p>
+      The uploaded image is also sent to a vision-capable GPT-4o model through OpenRouter.
+      The model classifies the image into an aesthetic such as Y2K, Cottagecore, Emo/Goth,
+      Coquette, Dark Academia, Clean Girl, Minimalist, Boho, Girly, or High Fashion.
+    </p>
+
+    <div class="figure-wrapper">
+      <!-- Replace with a screenshot of StyLily's image upload and aesthetic analysis panel. -->
+      <img src="StyLily-Image-Analysis.png" alt="StyLily image upload, extracted colour palette, and detected aesthetic" class="project-img"/>
+      <p class="figure-caption"><strong>Figure 1:</strong> Image inspiration, dominant colour extraction, and AI aesthetic detection.</p>
+    </div>
+
+    <h3>2. Generate a personalized outfit</h3>
+    <p>
+      Users select a budget range and aesthetic, enter the event they are dressing for, and specify
+      the temperature and whether it is raining. These preferences are passed into a prompt that
+      asks the language model to generate a complete look consisting of a top, bottom, outerwear,
+      shoes, and accessories.
+    </p>
+    <p>
+      The prompt also incorporates the extracted colour palette when an inspiration image has been
+      uploaded. It includes practical styling constraints: cold conditions call for a jacket or coat,
+      rainy conditions call for waterproof shoes and outerwear, and hot conditions avoid heavy layers.
+    </p>
+
+    <div class="figure-wrapper">
+      <!-- Replace with a screenshot of the outfit preferences and generated outfit. -->
+      <img src="StyLily-Outfit-Generation.png" alt="StyLily outfit generation interface and generated outfit recommendations" class="project-img"/>
+      <p class="figure-caption"><strong>Figure 2:</strong> Outfit generation using aesthetic, budget, event, and weather preferences.</p>
+    </div>
+
+    <h3>3. Discover aesthetic-matched shopping pages</h3>
+    <p>
+      After an image's aesthetic is detected, StyLily generates recommendations for product or
+      collection pages that aim to match the identified style and extracted colours. The prompt
+      also takes the user's budget, event, and weather preferences into account, and asks for
+      specific shopping pages rather than generic store homepages.
+    </p>
+    <p>
+      The recommendations are presented as links so users can explore the suggested stores and collections.
+      These are AI-generated suggestions; the application does not currently verify live inventory,
+      prices, or whether a product page is still available.
+    </p>
+
+    <h3>4. Chat with an AI stylist</h3>
+    <p>
+      I integrated a conversational fashion assistant using the chat completions API. The chatbot
+      maintains a message history during the session, allowing users to ask follow-up questions
+      and receive fashion advice in a continuous conversation. A clear-chat control lets users
+      reset the conversation.
+    </p>
+
+    <h2>How it works</h2>
+    <p>
+      The application is built in Python and uses Streamlit for its interface. Image processing
+      and colour extraction are handled with PIL and PyTorch, while OpenAI-compatible chat
+      completions accessed through OpenRouter power the image analysis, outfit generation,
+      shopping-page suggestions, and stylist conversation.
+    </p>
+
+    <div class="table-scroll">
+      <table class="data-table">
+        <thead>
+          <tr><th>Tool</th><th>Role in the project</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Python</td><td>Core application logic and integration of the different features.</td></tr>
+          <tr><td>Streamlit</td><td>Interactive web interface, image uploader, styling controls, generated results, and chatbot.</td></tr>
+          <tr><td>PyTorch</td><td>Tensor-based image processing and iterative clustering for dominant-colour extraction.</td></tr>
+          <tr><td>PIL</td><td>Opening, converting, and resizing uploaded images before analysis.</td></tr>
+          <tr><td>GPT-4o</td><td>Vision-based classification of the fashion aesthetic in an uploaded image.</td></tr>
+          <tr><td>GPT-3.5 Turbo</td><td>Generating outfit recommendations, shopping-page suggestions, and conversational styling responses.</td></tr>
+          <tr><td>OpenRouter API</td><td>Providing access to the language models through an OpenAI-compatible API interface.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Technical challenges and implementation</h2>
+    <h3>Connecting visual analysis with text generation</h3>
+    <p>
+      One of the central implementation challenges was connecting information extracted from an
+      image with the language model's recommendations. Rather than treating image analysis and
+      outfit generation as separate features, I passed the detected aesthetic and dominant colours
+      into the shopping and outfit-generation prompts. This allowed the visual input to inform
+      the generated results.
+    </p>
+
+    <h3>Designing prompts around real-world constraints</h3>
+    <p>
+      I structured the generation prompts to account for several inputs at once: aesthetic,
+      budget, event, temperature, rainfall, and available image colours. I also specified a
+      consistent output format for outfit categories and shopping links so the application
+      could parse and display the model's responses.
+    </p>
+
+    <h2>Skills this project shows</h2>
+    <div class="table-scroll">
+      <table class="data-table">
+        <thead>
+          <tr><th>Skill</th><th>Where it appears in StyLily</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Computer vision integration</td><td>Sending uploaded images to a vision-capable model for aesthetic classification.</td></tr>
+          <tr><td>Image processing</td><td>Using PIL and PyTorch tensors to process pixels and extract dominant colours.</td></tr>
+          <tr><td>AI integration</td><td>Connecting multiple model-powered features through the OpenRouter API.</td></tr>
+          <tr><td>Prompt engineering</td><td>Combining aesthetic, colour, budget, event, and weather context in structured prompts.</td></tr>
+          <tr><td>Application development</td><td>Building a multi-panel interactive application with Streamlit.</td></tr>
+          <tr><td>Product thinking</td><td>Bringing inspiration, outfit creation, shopping discovery, and styling advice into one workflow.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Project links</h2>
+    <p>
+      <a href="https://github.com/Anaisha-Jain/SheHacks-Hackathon-StyLily" target="_blank" rel="noopener noreferrer">GitHub repository</a>
+      <!-- Replace the placeholder above with the StyLily repository URL if it is public. -->
+    </p>
+
+  </main>
+</body>
+</html>
