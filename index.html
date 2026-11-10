@@ -8,7 +8,7 @@
   <script>
 // stop the old flat desk / landing flashing before routing or the 3D scene is ready
 (function () {
-  var fromProject = /(biosensors|bioinformatics|Tidal-Hackathon|Kinetik_App)\.html/i.test(document.referrer || '');
+  var fromProject = /(biosensors|bioinformatics|Tidal-Hackathon|Kinetik_App|She-Hacks)\.html/i.test(document.referrer || '');
   if (location.hash || fromProject) {
     document.documentElement.classList.add('boot-hash');
     setTimeout(function () { document.documentElement.classList.remove('boot-hash'); }, 3000); // failsafe
@@ -1492,6 +1492,10 @@
     #scene-container:not(.gl-on):not(.gl-fallback) > *:not(#scene-gl),
     #scene-container:not(.gl-on):not(.gl-fallback) ~ #s-landing #scope-wrap,
     #scene-container:not(.gl-on):not(.gl-fallback) ~ #s-landing .click-hint { visibility: hidden; }
+  
+    /* ── second desktop folder: Certificates ── */
+    .pw-icon-2 { top: 112px; }
+    .pw-win.front { z-index: 6; }
   </style>
 </head>
 <body>
@@ -1906,7 +1910,7 @@
     <div class="polaroid" style="top: 3%; left: 6%; --r: -1deg;">
       <div class="polaroid-tape"></div>
       <div class="polaroid-photo">
-        <img src="FTC_comp.jpg" alt="" onerror="this.style.display='none'; this.parentElement.classList.add('no-photo');">
+        <img src="photos/FTC_comp.jpg" alt="" onerror="this.style.display='none'; this.parentElement.classList.add('no-photo');">
       </div>
       <p class="polaroid-cap">FTC Robo!</p>
     </div>
@@ -1914,7 +1918,7 @@
     <div class="polaroid" style="top: 3%; right: 6%; --r: 1.5deg;">
       <div class="polaroid-tape"></div>
       <div class="polaroid-photo">
-        <img src="Fall.jpg" alt="" onerror="this.style.display='none'; this.parentElement.classList.add('no-photo');">
+        <img src="photos/Fall.jpg" alt="" onerror="this.style.display='none'; this.parentElement.classList.add('no-photo');">
       </div>
       <p class="polaroid-cap">Fall Season in Downtown Toronto!</p>
     </div>
@@ -1922,7 +1926,7 @@
     <div class="polaroid" style="top: 35%; left: 6%; --r: 0.8deg;">
       <div class="polaroid-tape"></div>
       <div class="polaroid-photo">
-        <img src="F1_sim.jpg" alt="" onerror="this.style.display='none'; this.parentElement.classList.add('no-photo');">
+        <img src="photos/F1_sim.jpg" alt="" onerror="this.style.display='none'; this.parentElement.classList.add('no-photo');">
       </div>
       <p class="polaroid-cap">F1 sim at supercar show</p>
     </div>
@@ -1930,7 +1934,7 @@
     <div class="polaroid" style="top: 35%; right: 6%; --r: -1.2deg;">
       <div class="polaroid-tape"></div>
       <div class="polaroid-photo">
-        <img src="CN_tower.jpg" alt="" onerror="this.style.display='none'; this.parentElement.classList.add('no-photo');">
+        <img src="photos/CN_tower.jpg" alt="" onerror="this.style.display='none'; this.parentElement.classList.add('no-photo');">
       </div>
       <p class="polaroid-cap">CN Tower</p>
     </div>
@@ -1938,7 +1942,7 @@
     <div class="polaroid" style="top: 67%; left: 6%; --r: -1.5deg;">
       <div class="polaroid-tape"></div>
       <div class="polaroid-photo">
-        <img src="Stegasaurus.jpg" alt="" onerror="this.style.display='none'; this.parentElement.classList.add('no-photo');">
+        <img src="photos/Stegasaurus.jpg" alt="" onerror="this.style.display='none'; this.parentElement.classList.add('no-photo');">
       </div>
       <p class="polaroid-cap">Stegosaurus fossil!</p>
     </div>
@@ -1946,7 +1950,7 @@
     <div class="polaroid" style="top: 67%; right: 6%; --r: 1deg;">
       <div class="polaroid-tape"></div>
       <div class="polaroid-photo">
-        <img src="Dog_Car.jpg" alt="" onerror="this.style.display='none'; this.parentElement.classList.add('no-photo');">
+        <img src="photos/Dog_Car.jpg" alt="" onerror="this.style.display='none'; this.parentElement.classList.add('no-photo');">
       </div>
       <p class="polaroid-cap">Furry in a Ferrari ;p</p>
     </div>
@@ -2036,6 +2040,13 @@
     <span>Projects</span>
   </button>
 
+
+  <!-- Certificates folder -->
+  <button class="pw-icon pw-icon-2" id="cw-folder-icon" type="button" aria-label="Open Certificates folder">
+    <svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="cdb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd978"/><stop offset="1" stop-color="#f5b33f"/></linearGradient><linearGradient id="cdk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e9a62f"/><stop offset="1" stop-color="#d9922a"/></linearGradient></defs><path d="M6 14a4 4 0 0 1 4-4h14l6 6h24a4 4 0 0 1 4 4v6H6z" fill="url(#cdk)"/><rect x="5" y="22" width="54" height="32" rx="4" fill="#fff" opacity=".85"/><path d="M5 26a4 4 0 0 1 4-4h46a4 4 0 0 1 4 4v24a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4z" fill="url(#cdb)"/><path d="M40 52l-3 10 9-4 9 4-3-10z" fill="#8a5a90"/><circle cx="46" cy="44" r="11" fill="#b58cb5" stroke="#fff" stroke-width="2.2"/><path d="M46 38.2l1.7 3.5 3.8.5-2.8 2.7.7 3.8-3.4-1.8-3.4 1.8.7-3.8-2.8-2.7 3.8-.5z" fill="#fff"/></svg>
+    <span>Certificates</span>
+  </button>
+
   <!-- File Explorer window -->
   <div class="pw-win" id="pw-win" role="dialog" aria-label="Projects">
     <div class="pw-title" id="pw-title">
@@ -2081,7 +2092,7 @@
             <span class="pw-file-name">Kinetik App</span>
           </a>
           <a class="pw-file" href="She-Hacks.html" data-cat="hackathon" data-name="SheHacks-Hackathon-StyLily" title="SheHacks-Hackathon-StyLily&#10;Hackathon project for SheHacks+ hosted at Western University.">
-            <svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="pf1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#efe6f1"/></linearGradient></defs><path d="M14 6h25l13 13v36a3 3 0 0 1-3 3H14a3 3 0 0 1-3-3V9a3 3 0 0 1 3-3z" fill="url(#pf1)" stroke="#c9b6cc" stroke-width="1.5"/><path d="M39 6v10a3 3 0 0 0 3 3h10z" fill="#e4d3e7" stroke="#c9b6cc" stroke-width="1.5" stroke-linejoin="round"/><rect x="17" y="31" width="30" height="18" rx="4" fill="#b58cb5"/><text x="32" y="44" text-anchor="middle" font-family="Consolas,monospace" font-size="11" font-weight="700" fill="#fff">&lt;/&gt;</text></svg>
+            <svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="pf4" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#efe6f1"/></linearGradient></defs><path d="M14 6h25l13 13v36a3 3 0 0 1-3 3H14a3 3 0 0 1-3-3V9a3 3 0 0 1 3-3z" fill="url(#pf4)" stroke="#c9b6cc" stroke-width="1.5"/><path d="M39 6v10a3 3 0 0 0 3 3h10z" fill="#e4d3e7" stroke="#c9b6cc" stroke-width="1.5" stroke-linejoin="round"/><rect x="17" y="31" width="30" height="18" rx="4" fill="#b58cb5"/><text x="32" y="44" text-anchor="middle" font-family="Consolas,monospace" font-size="11" font-weight="700" fill="#fff">&lt;/&gt;</text></svg>
             <span class="pw-file-name">She-Hacks StyLily</span>
           </a>
 
@@ -2097,12 +2108,46 @@
     <div class="pw-status"><span id="pw-count">4 items</span></div>
   </div>
 
+
+  <!-- Certificates window -->
+  <div class="pw-win" id="cw-win" role="dialog" aria-label="Certificates">
+    <div class="pw-title" id="cw-title">
+      <span class="pw-title-ico"><svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="ctb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd978"/><stop offset="1" stop-color="#f5b33f"/></linearGradient><linearGradient id="ctk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e9a62f"/><stop offset="1" stop-color="#d9922a"/></linearGradient></defs><path d="M6 14a4 4 0 0 1 4-4h14l6 6h24a4 4 0 0 1 4 4v6H6z" fill="url(#ctk)"/><rect x="5" y="22" width="54" height="32" rx="4" fill="#fff" opacity=".85"/><path d="M5 26a4 4 0 0 1 4-4h46a4 4 0 0 1 4 4v24a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4z" fill="url(#ctb)"/><path d="M40 52l-3 10 9-4 9 4-3-10z" fill="#8a5a90"/><circle cx="46" cy="44" r="11" fill="#b58cb5" stroke="#fff" stroke-width="2.2"/><path d="M46 38.2l1.7 3.5 3.8.5-2.8 2.7.7 3.8-3.4-1.8-3.4 1.8.7-3.8-2.8-2.7 3.8-.5z" fill="#fff"/></svg></span>
+      <span class="pw-title-text">Certificates</span>
+      <div class="pw-ctrls">
+        <button type="button" id="cw-min" aria-label="Minimize"><svg viewBox="0 0 10 10"><path d="M0 5h10" stroke="currentColor" fill="none"/></svg></button>
+        <button type="button" id="cw-max" aria-label="Maximize"><svg viewBox="0 0 10 10"><rect x=".5" y=".5" width="9" height="9" stroke="currentColor" fill="none"/></svg></button>
+        <button type="button" id="cw-close" class="pw-x" aria-label="Close"><svg viewBox="0 0 10 10"><path d="M0 0l10 10M10 0L0 10" stroke="currentColor" fill="none"/></svg></button>
+      </div>
+    </div>
+
+    <div class="pw-bar">
+      <div class="pw-addr">
+        <span class="pw-addr-ico"><svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="cab" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd978"/><stop offset="1" stop-color="#f5b33f"/></linearGradient><linearGradient id="cak" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e9a62f"/><stop offset="1" stop-color="#d9922a"/></linearGradient></defs><path d="M6 14a4 4 0 0 1 4-4h14l6 6h24a4 4 0 0 1 4 4v6H6z" fill="url(#cak)"/><rect x="5" y="22" width="54" height="32" rx="4" fill="#fff" opacity=".85"/><path d="M5 26a4 4 0 0 1 4-4h46a4 4 0 0 1 4 4v24a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4z" fill="url(#cab)"/><path d="M40 52l-3 10 9-4 9 4-3-10z" fill="#8a5a90"/><circle cx="46" cy="44" r="11" fill="#b58cb5" stroke="#fff" stroke-width="2.2"/><path d="M46 38.2l1.7 3.5 3.8.5-2.8 2.7.7 3.8-3.4-1.8-3.4 1.8.7-3.8-2.8-2.7 3.8-.5z" fill="#fff"/></svg></span>
+        <span>This PC</span><i>›</i><span>Desktop</span><i>›</i><b>Certificates</b>
+      </div>
+      <input class="pw-search" id="cw-search" type="search" placeholder="Search Certificates" autocomplete="off" aria-label="Search Certificates">
+    </div>
+
+    <div class="pw-body">
+      <nav class="pw-nav">
+        <button type="button" class="pw-nav-item active" data-filter="all">All certificates</button>
+      </nav>
+      <div class="pw-files" id="cw-files">
+        <p class="pw-empty" id="cw-empty">This folder is empty.</p>
+      </div>
+    </div>
+
+    <div class="pw-status"><span id="cw-count">0 items</span></div>
+  </div>
+
   <!-- taskbar -->
   <div class="pw-task">
     <p class="s-back pw-back" onclick="backToLens()">← Back to lens</p>
     <div class="pw-task-mid">
       <span class="pw-start" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="#7fc7ff" d="M2 3.8l8.6-1.2v8.2H2z"/><path fill="#7fc7ff" d="M11.8 2.4L22 1v9.8H11.8z"/><path fill="#7fc7ff" d="M2 12.2h8.6v8.2L2 19.2z"/><path fill="#7fc7ff" d="M11.8 12.2H22V23l-10.2-1.4z"/></svg></span>
       <button type="button" class="pw-task-app" id="pw-task-app" aria-label="Projects"><svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="kb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd978"/><stop offset="1" stop-color="#f5b33f"/></linearGradient><linearGradient id="kk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e9a62f"/><stop offset="1" stop-color="#d9922a"/></linearGradient></defs><path d="M6 14a4 4 0 0 1 4-4h14l6 6h24a4 4 0 0 1 4 4v6H6z" fill="url(#kk)"/><rect x="5" y="22" width="54" height="32" rx="4" fill="#fff" opacity=".85"/><path d="M5 26a4 4 0 0 1 4-4h46a4 4 0 0 1 4 4v24a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4z" fill="url(#kb)"/></svg></button>
+      <button type="button" class="pw-task-app" id="cw-task-app" aria-label="Certificates"><svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="ckb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd978"/><stop offset="1" stop-color="#f5b33f"/></linearGradient><linearGradient id="ckk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e9a62f"/><stop offset="1" stop-color="#d9922a"/></linearGradient></defs><path d="M6 14a4 4 0 0 1 4-4h14l6 6h24a4 4 0 0 1 4 4v6H6z" fill="url(#ckk)"/><rect x="5" y="22" width="54" height="32" rx="4" fill="#fff" opacity=".85"/><path d="M5 26a4 4 0 0 1 4-4h46a4 4 0 0 1 4 4v24a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4z" fill="url(#ckb)"/><path d="M40 52l-3 10 9-4 9 4-3-10z" fill="#8a5a90"/><circle cx="46" cy="44" r="11" fill="#b58cb5" stroke="#fff" stroke-width="2.2"/><path d="M46 38.2l1.7 3.5 3.8.5-2.8 2.7.7 3.8-3.4-1.8-3.4 1.8.7-3.8-2.8-2.7 3.8-.5z" fill="#fff"/></svg></button>
     </div>
     <div class="pw-clock" id="pw-clock"><span></span><span></span></div>
   </div>
@@ -2321,7 +2366,7 @@
   <p class="pdf-close" onclick="closePDF()">[ Close Certificate ]</p>
   
   <!-- Look ma, no iframes! -->
-  <img class="cert-image" src="Anaisha_Jain_TED.png" alt="TED-Ed Certificate">
+  <img class="cert-image" src="phots/Anaisha_Jain_TED.png" alt="TED-Ed Certificate">
 </div>
 
 <script>
@@ -3732,114 +3777,165 @@ window.addEventListener('DOMContentLoaded', () => {
 </script>
 
 <script>
-// ── Projects: Windows desktop ──
+// ── Desktop folders: Projects + Certificates ──
 (function () {
   const root = document.getElementById('s-projects');
   if (!root) return;
-  const win = document.getElementById('pw-win');
-  const icon = document.getElementById('pw-folder-icon');
-  const taskApp = document.getElementById('pw-task-app');
-  const title = document.getElementById('pw-title');
-  const search = document.getElementById('pw-search');
-  const files = Array.from(root.querySelectorAll('.pw-file'));
-  let activeFilter = 'all', placed = false;
+  const $ = function (id) { return document.getElementById(id); };
 
-  function place() {
-    const r = root.getBoundingClientRect();
-    win.style.left = Math.max(8, (r.width - win.offsetWidth) / 2 + 40) + 'px';
-    win.style.top = Math.max(8, (r.height - 48 - win.offsetHeight) / 2) + 'px';
-    placed = true;
-  }
-  function openWin() {
-    if (!placed) place();
-    win.classList.add('open'); taskApp.classList.add('on', 'active');
-    icon.classList.add('sel');
-  }
-  function hideWin() { win.classList.remove('open'); taskApp.classList.remove('active'); }
-  function closeWin() {
-    hideWin(); taskApp.classList.remove('on'); win.classList.remove('max');
-    icon.classList.remove('sel'); placed = false;
-    try { sessionStorage.removeItem('pwFolder'); } catch (e) {}
-  }
+  // ┌─ CERTIFICATES: add yours here ─────────────────────────────────────────────┐
+  // │ { name: 'Certificate name', issuer: 'Issuing organization', year: '2026',  │
+  // │   href: 'certificates/your-file.pdf' }   ← link to a PDF/image/URL        │
+  // └─────────────────────────────────────────────────────────────────────────────┘
+  const CERTS = [
+    // { name: 'Example Certificate', issuer: 'Example Org', year: '2026', href: 'certificates/example.pdf' },
+  ];
 
-  icon.addEventListener('click', openWin);
-  files.forEach(function (f) {
-    f.addEventListener('click', function () {
-      try { sessionStorage.setItem('pwFolder', '1'); } catch (e) {}
-      if (location.hash !== '#projects') history.replaceState(null, '', location.pathname + location.search + '#projects');
+  function certIcon(i) {
+    return '<svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="cf' + i + '" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#f1e8f3"/></linearGradient></defs>'
+      + '<rect x="6" y="10" width="52" height="38" rx="3" fill="url(#cf' + i + ')" stroke="#c9b6cc" stroke-width="1.5"/>'
+      + '<rect x="12" y="17" width="30" height="3" rx="1.5" fill="#d8c3dc"/><rect x="12" y="24" width="24" height="3" rx="1.5" fill="#e4d3e7"/><rect x="12" y="31" width="18" height="3" rx="1.5" fill="#e4d3e7"/>'
+      + '<path d="M44 42l-3 14 7-4 7 4-3-14z" fill="#8a5a90"/><circle cx="48" cy="38" r="9" fill="#b58cb5" stroke="#fff" stroke-width="2"/>'
+      + '<path d="M48 33.2l1.4 2.9 3.2.4-2.3 2.2.6 3.2-2.9-1.5-2.9 1.5.6-3.2-2.3-2.2 3.2-.4z" fill="#fff"/></svg>';
+  }
+  (function renderCerts() {
+    const box = $('cw-files'), empty = $('cw-empty');
+    CERTS.forEach(function (c, i) {
+      const el = document.createElement(c.href ? 'a' : 'span');
+      el.className = 'pw-file';
+      if (c.href) { el.href = c.href; el.target = '_blank'; el.rel = 'noopener'; }
+      el.dataset.cat = 'all';
+      el.dataset.name = (c.name + ' ' + (c.issuer || '')).toLowerCase();
+      el.title = [c.name, [c.issuer, c.year].filter(Boolean).join(' · ')].filter(Boolean).join('\n');
+      el.innerHTML = certIcon(i) + '<span class="pw-file-name"></span>';
+      el.lastChild.textContent = c.name;
+      box.insertBefore(el, empty);
     });
+  })();
+
+  const wins = [];
+  function setupWin(p, o) {
+    const win = $(p + '-win'), icon = $(p + '-folder-icon'), taskApp = $(p + '-task-app'),
+          title = $(p + '-title'), search = $(p + '-search'), countEl = $(p + '-count'), emptyEl = $(p + '-empty');
+    const navs = Array.from(win.querySelectorAll('.pw-nav-item'));
+    const files = Array.from(win.querySelectorAll('.pw-file'));
+    let activeFilter = 'all', placed = false;
+    const api = { win: win, icon: icon, key: o.key || null };
+
+    function place() {
+      const r = root.getBoundingClientRect();
+      win.style.left = Math.max(8, (r.width - win.offsetWidth) / 2 + o.dx) + 'px';
+      win.style.top = Math.max(8, (r.height - 48 - win.offsetHeight) / 2 + o.dy) + 'px';
+      placed = true;
+    }
+    function front() { wins.forEach(function (w) { w.win.classList.toggle('front', w.win === win); }); }
+    api.open = function () {
+      if (!placed) place();
+      win.classList.add('open'); taskApp.classList.add('on', 'active'); icon.classList.add('sel'); front();
+    };
+    api.hide = function () { win.classList.remove('open', 'front'); taskApp.classList.remove('active'); };
+    api.close = function () {
+      api.hide(); taskApp.classList.remove('on'); win.classList.remove('max');
+      icon.classList.remove('sel'); placed = false;
+      if (o.key) { try { sessionStorage.removeItem(o.key); } catch (e) {} }
+    };
+
+    function apply() {
+      const q = search.value.trim().toLowerCase();
+      let n = 0;
+      files.forEach(function (f) {
+        const show = (activeFilter === 'all' || f.dataset.cat.split(/\s+/).indexOf(activeFilter) > -1) && (!q || f.dataset.name.toLowerCase().indexOf(q) > -1);
+        f.hidden = !show; if (show) n++;
+      });
+      countEl.textContent = n + (n === 1 ? ' item' : ' items');
+      emptyEl.textContent = (q && files.length) ? 'No items match your search.' : o.emptyText;
+      emptyEl.classList.toggle('show', n === 0);
+    }
+    api.reset = function () {
+      search.value = ''; activeFilter = 'all';
+      navs.forEach(function (x) { x.classList.toggle('active', x.dataset.filter === 'all'); });
+      apply();
+    };
+    navs.forEach(function (b) {
+      b.addEventListener('click', function () {
+        navs.forEach(function (x) { x.classList.remove('active'); });
+        b.classList.add('active'); activeFilter = b.dataset.filter; apply();
+      });
+    });
+    search.addEventListener('input', apply);
+
+    icon.addEventListener('click', api.open);
+    taskApp.addEventListener('click', function () {
+      if (!win.classList.contains('open')) api.open();
+      else if (win.classList.contains('front')) api.hide();
+      else front();
+    });
+    $(p + '-close').addEventListener('click', api.close);
+    $(p + '-min').addEventListener('click', api.hide);
+    $(p + '-max').addEventListener('click', function () { win.classList.toggle('max'); });
+    title.addEventListener('dblclick', function (e) { if (!e.target.closest('.pw-ctrls')) win.classList.toggle('max'); });
+    win.addEventListener('pointerdown', front);
+
+    // remember the folder was open when a file is clicked (so Back returns to it)
+    if (o.key) {
+      files.forEach(function (f) {
+        f.addEventListener('click', function () {
+          try { sessionStorage.setItem(o.key, '1'); } catch (e) {}
+          if (location.hash !== '#projects') history.replaceState(null, '', location.pathname + location.search + '#projects');
+        });
+      });
+    }
+
+    // drag by title bar
+    let drag = null;
+    title.addEventListener('pointerdown', function (e) {
+      if (e.target.closest('.pw-ctrls') || win.classList.contains('max') || window.innerWidth <= 700) return;
+      drag = { dx: e.clientX - win.offsetLeft, dy: e.clientY - win.offsetTop };
+      title.setPointerCapture(e.pointerId);
+    });
+    title.addEventListener('pointermove', function (e) {
+      if (!drag) return;
+      const maxX = root.clientWidth - 120, maxY = root.clientHeight - 48 - 38;
+      win.style.left = Math.min(maxX, Math.max(-win.offsetWidth + 120, e.clientX - drag.dx)) + 'px';
+      win.style.top = Math.min(maxY, Math.max(0, e.clientY - drag.dy)) + 'px';
+    });
+    title.addEventListener('pointerup', function () { drag = null; });
+
+    apply();
+    wins.push(api);
+    return api;
+  }
+
+  const projects = setupWin('pw', { dx: 40, dy: 0, key: 'pwFolder', emptyText: 'No items match your search.' });
+  const certs = setupWin('cw', { dx: -30, dy: 28, key: null, emptyText: 'This folder is empty.' });
+
+  root.addEventListener('mousedown', function (e) {
+    if (!e.target.closest('.pw-icon')) wins.forEach(function (w) { w.icon.classList.remove('sel'); });
   });
+
   // arriving from a project page (e.g. its own back link to index.html) -> straight to the open folder
   try {
-    if (!location.hash && /(biosensors|bioinformatics|Tidal-Hackathon|Kinetik_App)\.html/i.test(document.referrer || '')) {
+    if (!location.hash && /(biosensors|bioinformatics|Tidal-Hackathon|Kinetik_App|She-Hacks)\.html/i.test(document.referrer || '')) {
       sessionStorage.setItem('pwFolder', '1'); location.hash = 'projects';
     }
   } catch (e) {}
-  taskApp.addEventListener('click', function () {
-    if (win.classList.contains('open')) hideWin(); else openWin();
-  });
-  document.getElementById('pw-close').addEventListener('click', closeWin);
-  document.getElementById('pw-min').addEventListener('click', hideWin);
-  document.getElementById('pw-max').addEventListener('click', function () { win.classList.toggle('max'); });
-  title.addEventListener('dblclick', function (e) { if (!e.target.closest('.pw-ctrls')) win.classList.toggle('max'); });
-  root.addEventListener('mousedown', function (e) {
-    if (!e.target.closest('.pw-icon')) icon.classList.remove('sel');
-  });
-
-  // drag by title bar
-  let drag = null;
-  title.addEventListener('pointerdown', function (e) {
-    if (e.target.closest('.pw-ctrls') || win.classList.contains('max') || window.innerWidth <= 700) return;
-    drag = { dx: e.clientX - win.offsetLeft, dy: e.clientY - win.offsetTop };
-    title.setPointerCapture(e.pointerId);
-  });
-  title.addEventListener('pointermove', function (e) {
-    if (!drag) return;
-    const maxX = root.clientWidth - 120, maxY = root.clientHeight - 48 - 38;
-    win.style.left = Math.min(maxX, Math.max(-win.offsetWidth + 120, e.clientX - drag.dx)) + 'px';
-    win.style.top = Math.min(maxY, Math.max(0, e.clientY - drag.dy)) + 'px';
-  });
-  title.addEventListener('pointerup', function () { drag = null; });
-
-  // sidebar filter + search
-  function apply() {
-    const q = search.value.trim().toLowerCase();
-    let n = 0;
-    files.forEach(function (f) {
-      const show = (activeFilter === 'all' || f.dataset.cat === activeFilter) && (!q || f.dataset.name.indexOf(q) > -1);
-      f.hidden = !show; if (show) n++;
-    });
-    document.getElementById('pw-count').textContent = n + (n === 1 ? ' item' : ' items');
-    document.getElementById('pw-empty').classList.toggle('show', n === 0);
-  }
-  root.querySelectorAll('.pw-nav-item').forEach(function (b) {
-    b.addEventListener('click', function () {
-      root.querySelectorAll('.pw-nav-item').forEach(function (x) { x.classList.remove('active'); });
-      b.classList.add('active'); activeFilter = b.dataset.filter; apply();
-    });
-  });
-  search.addEventListener('input', apply);
 
   // clock
   function tick() {
-    const d = new Date(), c = document.getElementById('pw-clock').children;
+    const d = new Date(), c = $('pw-clock').children;
     c[0].textContent = d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
     c[1].textContent = d.toLocaleDateString('en-CA');
   }
   tick(); setInterval(tick, 15000);
 
-  // reset to a clean desktop (folder closed) whenever the screen is left
+  // reopen the Projects folder when coming back from a project; reset to a clean desktop when the screen is left
   new MutationObserver(function () {
     if (!root.classList.contains('hidden')) {
       let was = false; try { was = sessionStorage.getItem('pwFolder') === '1'; } catch (e) {}
-      if (was && !win.classList.contains('open')) openWin();
+      if (was && !projects.win.classList.contains('open')) projects.open();
       return;
     }
-    if (root.classList.contains('hidden')) {
-      setTimeout(function () { closeWin(); search.value = ''; activeFilter = 'all';
-        root.querySelectorAll('.pw-nav-item').forEach(function (x) { x.classList.toggle('active', x.dataset.filter === 'all'); });
-        apply(); }, 450);
-    }
+    setTimeout(function () { wins.forEach(function (w) { w.close(); w.reset(); }); }, 450);
   }).observe(root, { attributes: true, attributeFilter: ['class'] });
 })();
 </script>
