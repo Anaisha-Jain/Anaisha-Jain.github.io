@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tidal: Women's Health Monitoring App</title>
+  <meta name="description" content="Tidal, a women's health app built at the WiE hackathon with Python, Streamlit and the OpenAI API. Winner of Best Data Visualisation."/>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+
+    :root {
+      --bg: #fcfbfe;
+      --accent: #b58cb5;
+      --accent-dim: rgba(181, 140, 181, 0.1);
+      --text: #453445;
+      --muted: #958495;
+      --peach: #ffbba6;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Cormorant Garamond', serif;
+      margin: 0;
+      padding: 6vh 4vw;
+      display: flex;
+      justify-content: center;
+    }
+
+    /* ── The "Document" Container ── */
+    .project-container {
+      background: #ffffff;
+      max-width: 900px;
+      width: 100%;
+      padding: 60px 80px;
+      border-radius: 8px;
+      box-shadow: 0 20px 60px rgba(61, 43, 61, 0.05);
+      border: 1px solid rgba(181, 140, 181, 0.1);
+    }
+
+    .back-btn {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: var(--muted);
+      text-transform: uppercase;
+      text-decoration: none;
+      display: inline-block;
+      margin-bottom: 40px;
+      transition: color 0.2s;
+    }
+    .back-btn:hover, .back-btn:focus-visible { color: var(--accent); }
+
+    h1 {
+      font-size: clamp(36px, 5vw, 56px);
+      font-weight: 300;
+      font-style: italic;
+      margin: 0 0 16px 0;
+      line-height: 1.1;
+    }
+
+    .rule {
+      width: 64px;
+      height: 2px;
+      background: var(--accent);
+      margin-bottom: 30px;
+    }
+
+    /* ── Tech Stack Tags ── */
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 40px;
+    }
+    .tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-dim);
+      padding: 6px 12px;
+      border-radius: 4px;
+    }
+
+    /* ── Overview box ── */
+    .abstract-box {
+      background: #fef8ec;
+      border-left: 2px solid var(--peach);
+      padding: 24px 32px;
+      margin-bottom: 40px;
+      border-radius: 0 4px 4px 0;
+    }
+    .abstract-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--peach);
+      margin: 0 0 12px 0;
+      font-weight: 700;
+    }
+    .abstract-box p:last-child { margin-bottom: 0; }
+
+    p {
+      font-size: 20px;
+      font-weight: 300;
+      line-height: 1.8;
+      color: var(--text);
+      margin: 0 0 24px 0;
+    }
+    p strong { font-weight: 600; }
+
+    h2 {
+      font-size: 32px;
+      font-weight: 400;
+      margin: 48px 0 16px 0;
+    }
+    h3 {
+      font-size: 24px;
+      font-weight: 600;
+      margin: 32px 0 10px 0;
+    }
+
+    /* ── Figures ── */
+    .figure-wrapper {
+      margin: 32px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .project-img {
+      width: 100%;
+      max-height: 500px;
+      object-fit: cover;
+      border-radius: 6px;
+      box-shadow: 0 8px 24px rgba(61, 43, 61, 0.1);
+      border: 1px solid rgba(181, 140, 181, 0.2);
+    }
+    .figure-caption {
+      margin: 12px 0 0 0;
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-align: center;
+      line-height: 1.6;
+    }
+    .figure-caption strong { color: var(--accent); }
+
+    /* ── Tables ── */
+    .table-scroll { overflow-x: auto; }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 24px 0 32px 0;
+      font-size: 18px;
+    }
+    .data-table th {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: left;
+      padding: 16px 12px;
+      border-bottom: 1px solid var(--accent);
+    }
+    .data-table td {
+      padding: 16px 12px;
+      border-bottom: 1px solid rgba(181, 140, 181, 0.2);
+      font-weight: 300;
+      line-height: 1.6;
+      vertical-align: top;
+    }
+    .data-table td:first-child { font-weight: 600; white-space: nowrap; }
+
+    @media (max-width: 700px) {
+      body { padding: 3vh 3vw; }
+      .project-container { padding: 36px 22px; }
+      p { font-size: 18px; }
+      h2 { font-size: 28px; }
+      h3 { font-size: 22px; }
+      .abstract-box { padding: 20px; }
+      .data-table td:first-child { white-space: normal; }
+    }
+  </style>
+</head>
+<body>
+
+  <main class="project-container">
+    <a href="index.html#projects" class="back-btn">← Back to Projects</a>
+
+    <h1>Tidal: Women's Health Monitoring App</h1>
+    <div class="rule"></div>
+
+    <div class="tag-row">
+      <span class="tag">Python</span>
+      <span class="tag">Streamlit</span>
+      <span class="tag">Data Visualisation</span>
+      <span class="tag">Teamwork</span>
+      <span class="tag">Pandas</span>
+      <span class="tag">Matplotlib</span>
+    </div>
+
+    <!-- OVERVIEW -->
+    <div class="abstract-box">
+      <p class="abstract-title">Overview</p>
+      <p>
+        Tidal is a women's health app my team built at the WiE hackathon, where the challenge was to combine AI and healthcare.
+        It brings a woman's cycle, sleep and medical documents together, answers personal questions about them with an AI assistant,
+        and shows the results in clear visualisations. We won the Best Data Visualisation category.
+      </p>
+    </div>
+
+    <!-- THE PROBLEM -->
+    <h2>The problem</h2>
+    <p>
+      Women's health is shaped by patterns, such as the menstrual cycle and sleep, that most health tools treat
+      as an afterthought. Cycle dates, sleep habits and blood test results usually live in different places,
+      and it is hard to see how they connect when everyday life is busy.
+    </p>
+    <p>
+      The hackathon asked for something at the intersection of AI and healthcare. We took a holistic approach:
+      help women understand their own patterns, get to know their bodies, and take their health in stride.
+    </p>
+
+    <!-- WHAT WE BUILT -->
+    <h2>What we built</h2>
+    <p>
+      Tidal is a web app where a user brings together three kinds of information and then asks questions about them.
+    </p>
+
+    <h3>1. Upload your data</h3>
+    <p>
+      Users upload their period cycle history, their sleep schedule, and blood tests or other medical documents.
+    </p>
+
+    <h3>2. Ask the AI assistant</h3>
+    <p>
+      Tidal's AI assistant answers personal questions based on where the user currently is in their cycle,
+      their sleep schedule and the documents they uploaded, so its answers reflect their own situation and not generic advice.
+    </p>
+
+    <h3>3. See the results</h3>
+    <p>
+      The app turns the user's data into visualisations that make their patterns easy to read at a glance.
+      This is the feature that won us the Best Data Visualisation award.
+    </p>
+
+    <div class="figure-wrapper">
+      <img src="photos/Tidal.jpeg" alt="Tidal's data visualisation of a user's health results" class="project-img" />
+      <p class="figure-caption"><strong>Figure 1:</strong> Tidal's visualisation of a user's results.</p>
+    </div>
+
+    <!-- HOW IT WORKS -->
+    <h2>How it works</h2>
+    <p>
+      The whole app is written in Python. Streamlit provides the interface, Pandas handles analysing and visualising the data,
+      and the OpenAI API powers the assistant.
+    </p>
+    <div class="table-scroll">
+      <table class="data-table">
+        <thead>
+          <tr><th>Tool</th><th>Role</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Python</td><td>The language for the entire project</td></tr>
+          <tr><td>Streamlit</td><td>The web interface: uploads, questions and charts</td></tr>
+          <tr><td>Pandas</td><td>Analysing the cycle and sleep data and preparing it for visualisation</td></tr>
+          <tr><td>OpenAI API</td><td>The assistant that answers personal questions from the user's data and documents</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- ADD (optional): your own role on the team, team size, how long you had, and one technical challenge you solved
+         (e.g. getting the assistant to use the cycle phase, handling uploaded documents, choosing which charts to build). -->
+
+    <!-- OUTCOME -->
+    <h2>Outcome</h2>
+    <p>
+      Tidal won the <strong>Best Data Visualisation</strong> category at the WiE hackathon.
+    <a href="https://github.com/Anaisha-Jain/WiE-Hackathon-Uwaterloo"> Github link!</a href></p>
+
+    <div class="figure-wrapper">
+      <img src="photos/Prize.jpeg" alt="The certificate and prize for Best Data Visualisation at the hackathon" class="project-img" />
+      <p class="figure-caption"><strong>Figure 2:</strong> The certificate and prize we won.</p>
+    </div>
+
+    <!-- SKILLS -->
+    <h2>Skills this project shows</h2>
+    <div class="table-scroll">
+      <table class="data-table">
+        <thead>
+          <tr><th>Skill</th><th>Where it appears in Tidal</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Data analysis</td><td>Working with cycle and sleep data in Pandas</td></tr>
+          <tr><td>Data visualisation</td><td>Charts that make personal health patterns easy to read (the award-winning feature)</td></tr>
+          <tr><td>AI integration</td><td>Connecting the OpenAI API to a user's own data and documents</td></tr>
+          <tr><td>Rapid prototyping</td><td>Building a working app with Streamlit within a hackathon</td></tr>
+          <tr><td>Teamwork</td><td>Building and presenting a project with a team under a deadline</td></tr>
+          <tr><td>Product thinking</td><td>Designing for a real group of users and their specific needs</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+</body>
+</html>
